@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário de Atividades 2027 - 7º CEU Duque de Caxias</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f4f6f9 0%, #e9ecef 100%);
+            color: #2c3e50;
+            line-height: 1.6;
+            padding-bottom: 2rem;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a4d6d 0%, #2c5f8d 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .header-divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #d4af37, #ffd700);
+            margin: 1.2rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Intro Section */
+        .intro {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #d4af37;
+        }
+
+        .intro h2 {
+            color: #1a4d6d;
+            margin-bottom: 1rem;
+            font-size: 1.6rem;
+        }
+
+        .intro p {
+            margin-bottom: 0.8rem;
+            color: #4a5568;
+            font-size: 1.05rem;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+            background: white;
+            padding: 1.2rem 1.8rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 500;
+        }
+
+        .legend-color {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+        }
+
+        /* Monthly Rows Layout */
+        .months-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .month-row {
+            background: white;
+            border-radius: 14px;
+            padding: 1.8rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .month-row-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #edf2f7;
+        }
+
+        .month-title-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .month-badge-num {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .month-name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .month-card-count {
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        /* Month Cards Grid within row */
+        .month-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Card Component */
+        .month-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border-style: solid;
+            border-width: 2px; /* Unique month color moldura */
+        }
+
+        .month-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .month-card::after {
+            content: "🔍 Clique para expandir";
+            position: absolute;
+            bottom: 0.6rem;
+            right: 0.8rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+
+        .month-card:hover::after {
+            opacity: 0.85;
+            transform: translateY(0);
+        }
+
+        .month-card-header {
+            padding: 1.2rem 1.5rem;
+            color: white;
+            font-weight: 700;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .month-card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .activity-type {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+            align-self: flex-start;
+        }
+
+        .type-capacitacao {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .type-encontro {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        .type-confraternizacao {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .type-eleicao {
+            background: #ccfbf1;
+            color: #0f766e;
+        }
+
+        .activity-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.6rem;
+            line-height: 1.35;
+        }
+
+        .activity-description {
+            font-size: 0.95rem;
+            color: #475569;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .activity-diretriz {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-style: italic;
+            padding-top: 0.8rem;
+            border-top: 1px dashed #e2e8f0;
+        }
+
+        /* -------------------------------------------------------------
+           MOLDURAS E CORES ESPECÍFICAS POR MÊS
+           ------------------------------------------------------------- */
+        /* 01 - JANEIRO (Teal) */
+        .month-row[data-month="01"] .month-badge-num { background: #0d9488; }
+        .month-row[data-month="01"] .month-card { border-color: #0d9488; }
+        .month-row[data-month="01"] .month-card-header { background: linear-gradient(135deg, #0d9488, #0f766e); }
+        .month-row[data-month="01"] .month-card::after { color: #0d9488; }
+
+        /* 02 - FEVEREIRO (Royal Blue) */
+        .month-row[data-month="02"] .month-badge-num { background: #2563eb; }
+        .month-row[data-month="02"] .month-card { border-color: #2563eb; }
+        .month-row[data-month="02"] .month-card-header { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .month-row[data-month="02"] .month-card::after { color: #2563eb; }
+
+        /* 03 - MARÇO (Emerald Green) */
+        .month-row[data-month="03"] .month-badge-num { background: #059669; }
+        .month-row[data-month="03"] .month-card { border-color: #059669; }
+        .month-row[data-month="03"] .month-card-header { background: linear-gradient(135deg, #059669, #047857); }
+        .month-row[data-month="03"] .month-card::after { color: #059669; }
+
+        /* 04 - ABRIL (Warm Amber / Orange) */
+        .month-row[data-month="04"] .month-badge-num { background: #ea580c; }
+        .month-row[data-month="04"] .month-card { border-color: #ea580c; }
+        .month-row[data-month="04"] .month-card-header { background: linear-gradient(135deg, #ea580c, #c2410c); }
+        .month-row[data-month="04"] .month-card::after { color: #ea580c; }
+
+        /* 05 - MAIO (Purple) */
+        .month-row[data-month="05"] .month-badge-num { background: #7c3aed; }
+        .month-row[data-month="05"] .month-card { border-color: #7c3aed; }
+        .month-row[data-month="05"] .month-card-header { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+        .month-row[data-month="05"] .month-card::after { color: #7c3aed; }
+
+        /* 06 - JUNHO (Indigo) */
+        .month-row[data-month="06"] .month-badge-num { background: #4f46e5; }
+        .month-row[data-month="06"] .month-card { border-color: #4f46e5; }
+        .month-row[data-month="06"] .month-card-header { background: linear-gradient(135deg, #4f46e5, #4338ca); }
+        .month-row[data-month="06"] .month-card::after { color: #4f46e5; }
+
+        /* 07 - JULHO (Crimson Red) */
+        .month-row[data-month="07"] .month-badge-num { background: #dc2626; }
+        .month-row[data-month="07"] .month-card { border-color: #dc2626; }
+        .month-row[data-month="07"] .month-card-header { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+        .month-row[data-month="07"] .month-card::after { color: #dc2626; }
+
+        /* 08 - AGOSTO (Terracotta / Brown) */
+        .month-row[data-month="08"] .month-badge-num { background: #854d0e; }
+        .month-row[data-month="08"] .month-card { border-color: #854d0e; }
+        .month-row[data-month="08"] .month-card-header { background: linear-gradient(135deg, #854d0e, #713f12); }
+        .month-row[data-month="08"] .month-card::after { color: #854d0e; }
+
+        /* 09 - SETEMBRO (Pink / Rose) */
+        .month-row[data-month="09"] .month-badge-num { background: #db2777; }
+        .month-row[data-month="09"] .month-card { border-color: #db2777; }
+        .month-row[data-month="09"] .month-card-header { background: linear-gradient(135deg, #db2777, #be185d); }
+        .month-row[data-month="09"] .month-card::after { color: #db2777; }
+
+        /* 10 - OUTUBRO (Forest Green) */
+        .month-row[data-month="10"] .month-badge-num { background: #16a34a; }
+        .month-row[data-month="10"] .month-card { border-color: #16a34a; }
+        .month-row[data-month="10"] .month-card-header { background: linear-gradient(135deg, #16a34a, #15803d); }
+        .month-row[data-month="10"] .month-card::after { color: #16a34a; }
+
+        /* 11 - NOVEMBRO (Gold / Bronze) */
+        .month-row[data-month="11"] .month-badge-num { background: #ca8a04; }
+        .month-row[data-month="11"] .month-card { border-color: #ca8a04; }
+        .month-row[data-month="11"] .month-card-header { background: linear-gradient(135deg, #ca8a04, #a16207); }
+        .month-row[data-month="11"] .month-card::after { color: #ca8a04; }
+
+        /* 12 - DEZEMBRO (Violet / Night) */
+        .month-row[data-month="12"] .month-badge-num { background: #9333ea; }
+        .month-row[data-month="12"] .month-card { border-color: #9333ea; }
+        .month-row[data-month="12"] .month-card-header { background: linear-gradient(135deg, #9333ea, #7e22ce); }
+        .month-row[data-month="12"] .month-card::after { color: #9333ea; }
+
+
+        /* Timeline View */
+        .timeline {
+            background: white;
+            padding: 3rem 2.5rem;
+            border-radius: 14px;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .timeline h2 {
+            color: #1a4d6d;
+            margin-bottom: 2rem;
+            font-size: 1.6rem;
+            text-align: center;
+        }
+
+        .timeline-items {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            align-items: start;
+        }
+
+        .timeline-month {
+            font-weight: 700;
+            color: #1a4d6d;
+            font-size: 1.1rem;
+        }
+
+        .timeline-content {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #d4af37;
+        }
+
+        .timeline-content h4 {
+            color: #1a4d6d;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .timeline-content p {
+            color: #475569;
+            font-size: 0.98rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* EXPAND MODAL POPUP */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 1.5rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: white;
+            width: 100%;
+            max-width: 650px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.2rem;
+            background: rgba(255, 255, 255, 0.25);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, transform 0.2s ease;
+            z-index: 10;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1.5rem;
+            color: white;
+        }
+
+        .modal-date {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-body .activity-type {
+            font-size: 0.85rem;
+            padding: 0.4rem 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-body .activity-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+
+        .modal-body .activity-description {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #334155;
+        }
+
+        .modal-body .activity-diretriz {
+            font-size: 0.95rem;
+            padding-top: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.95rem;
+        }
+
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .month-cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .timeline-month {
+                display: inline-block;
+                background: #d4af37;
+                color: white;
+                padding: 0.3rem 0.8rem;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .month-card {
+                page-break-inside: avoid;
+            }
+            .modal-overlay {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Calendário de Atividades 2027</h1>
+        <p>7º Conselho Espírita de Unificação — Duque de Caxias</p>
+        <p style="font-size: 0.95rem; margin-top: 0.5rem;">Área de Ações Estratégicas (ARAE)</p>
+        <div class="header-divider"></div>
+    </div>
+
+    <div class="container">
+        <!-- Introdução -->
+        <div class="intro">
+            <h2>Calendário de Atividades 2027: Datas e Responsabilidades</h2>
+            <p>O calendário apresentado está estruturado com as <span class="highlight">datas específicas das atividades aprovadas para 2027</span>, organizadas mês a mês, identificando a área responsável pela organização e o alinhamento com as diretrizes da Federação Espírita Brasileira.</p>
+            <p>Um total de <strong>34 atividades estratégicas</strong> estão planejadas ao longo do ano, distribuídas em: <strong>reuniões ordinárias do conselho</strong>, <strong>círculos de estudos espíritas</strong>, <strong>capacitações temáticas</strong>, <strong>seminários especializados</strong>, <strong>encontros de unificação e família</strong> e <strong>confraternizações regionais</strong>.</p>
+        </div>
+
+        <!-- Legenda -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #0f766e, #0d9488);"></div>
+                <span>Reuniões & Planejamento</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #0369a1, #0284c7);"></div>
+                <span>Estudos, Capacitações & Seminários</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #6b21a8, #7e22ce);"></div>
+                <span>Encontros Regionais & Temáticos</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #c2410c, #ea580c);"></div>
+                <span>Confraternizações</span>
+            </div>
+        </div>
+
+        <!-- Atividades Organizadas por Mês (Sequência em cada linha) -->
+        <div class="months-container">
+
+            <!-- JANEIRO (Mês 01) - 2 ATIVIDADES -->
+            <div class="month-row" data-month="01">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">01</div>
+                        <h3 class="month-name">Janeiro</h3>
+                    </div>
+                    <span class="month-card-count">2 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>10 de Janeiro — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 6 (Unificação) e 7 (Formação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>10 de Janeiro — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Planejamento & Adequação</span>
+                            <div class="activity-title">UNIFICAÇÃO — Planejamento e Adequação</div>
+                            <div class="activity-description">Avaliação dos resultados de 2026 e planejamento detalhado das atividades para 2027. Apresentação oficial do calendário e dos objetivos estratégicos. Adequação dos coordenadores do 7º CEU ao novo regulamento dos Conselhos Espíritas Unificados.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 6 (Unificação) e 7 (Formação)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEVEREIRO (Mês 02) -->
+            <div class="month-row" data-month="02">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">02</div>
+                        <h3 class="month-name">Fevereiro</h3>
+                    </div>
+                    <span class="month-card-count">2 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>14 de Fevereiro — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>14 de Fevereiro — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Roda de Conversa</span>
+                            <div class="activity-title">Roda de Conversa — Estudos Espíritas</div>
+                            <div class="activity-description">Encontro informal de diálogo e reflexão sobre temas espíritas relevantes, promovendo integração e aprofundamento doutrinário em ambiente fraterno.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Estudos Espíritas | <strong>Diretrizes:</strong> 1 (Difusão) e 3 (Integração)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MARÇO (Mês 03) -->
+            <div class="month-row" data-month="03">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">03</div>
+                        <h3 class="month-name">Março</h3>
+                    </div>
+                    <span class="month-card-count">2 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>07 de Março — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>07 de Março — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Capacitação</span>
+                            <div class="activity-title">Capacitação dos Evangelizadores</div>
+                            <div class="activity-description">Capacitação de evangelizadores das áreas de Infância, Juventude e Família para aprimoramento das práticas educacionais e doutrinária.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Infância, Juventude e Família | <strong>Diretrizes:</strong> 1 (Difusão) e 10 (Juventude)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABRIL (Mês 04) -->
+            <div class="month-row" data-month="04">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">04</div>
+                        <h3 class="month-name">Abril</h3>
+                    </div>
+                    <span class="month-card-count">4 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>04 de Abril — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>04 de Abril — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Estudo</span>
+                            <div class="activity-title">1º Círculo de Cultura Espírita (CCE)</div>
+                            <div class="activity-description">Primeiro encontro do grupo de estudos espíritas, focado no aprofundamento doutrinário e discussão de temas relevantes para o movimento.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Estudos Espíritas | <strong>Diretrizes:</strong> 1 (Difusão) e 2 (Universalidade)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>11-18 de Abril</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Semana Temática</span>
+                            <div class="activity-title">Semana Espírita — 170 Anos do Livro dos Espíritos</div>
+                            <div class="activity-description">Celebração especial dos 170 anos da obra de Allan Kardec com palestras, seminários e estudos aprofundados sobre a codificação espírita. Atividades de 11 a 18 de abril.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Estudos Espíritas | <strong>Diretrizes:</strong> 1 (Difusão) e 8 (Livro Espírita)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>25 de Abril</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-encontro">Encontro Regional</span>
+                            <div class="activity-title">ENEDIN — Encontro da Evangelização da Infância</div>
+                            <div class="activity-description">Encontro da infância reunindo evangelizandos de várias evangelizações das Instituições Espíritas para um dia festivo de aprendizado do evangelho e doutrina espírita</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Infância, Juventude e Família | <strong>Diretrizes:</strong> 3 (Integração) e 10 (Juventude)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIO (Mês 05) -->
+            <div class="month-row" data-month="05">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">05</div>
+                        <h3 class="month-name">Maio</h3>
+                    </div>
+                    <span class="month-card-count">2 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>02 de Maio — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>02 de Maio — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Capacitação</span>
+                            <div class="activity-title">Capacitação da Área de Assistência e Promoção Social (SAPSE)</div>
+                            <div class="activity-description">Formação continuada dos trabalhadores da assistência espírita focando em metodologias de atendimento, ética solidária e práticas de promoção social.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> SAPSE | <strong>Diretrizes:</strong> 5 (Sustentabilidade) e 9 (Participação Social)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JUNHO (Mês 06) -->
+            <div class="month-row" data-month="06">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">06</div>
+                        <h3 class="month-name">Junho</h3>
+                    </div>
+                    <span class="month-card-count">3 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>06 de Junho — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>06 de Junho — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Estudo</span>
+                            <div class="activity-title">2º Círculo de Cultura Espírita (CCE)</div>
+                            <div class="activity-description">Continuação do grupo de estudos temáticos focado em aprofundamento doutrinário e formação filosófica alinhada aos princípios espíritas.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Estudos Espíritas | <strong>Diretrizes:</strong> 1 (Difusão) e 2 (Universalidade)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>20 de Junho</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-encontro">Encontro</span>
+                            <div class="activity-title">3º Encontro de Tarefeiros Espíritas</div>
+                            <div class="activity-description">Reunião de voluntários e colaboradores das instituições espíritas para integração, compartilhamento de experiências e reafirmação da unidade de propósito.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> ARAE | <strong>Diretrizes:</strong> 1 (Difusão) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JULHO (Mês 07) -->
+            <div class="month-row" data-month="07">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">07</div>
+                        <h3 class="month-name">Julho</h3>
+                    </div>
+                    <span class="month-card-count">3 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>04 de Julho — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>04 de Julho — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Capacitação</span>
+                            <div class="activity-title">Capacitação da Área de Comunicação Social Espírita (ACSE)</div>
+                            <div class="activity-description">Formação de comunicadores espíritas em estratégias modernas, produção de conteúdo, gestão de mídias sociais e difusão eficaz da doutrina espírita.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> ACSE | <strong>Diretrizes:</strong> 1 (Difusão) e 8 (Livro Espírita)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>18 de Julho</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-encontro">Encontro Regional</span>
+                            <div class="activity-title">EREU — Encontro Regional Espírita de Unificação</div>
+                            <div class="activity-description">Encontro Regional Espírita de Unificação promovido pela FERJ (Federação Espírita do Estado do Rio de Janeiro) para integração e fortalecimento do movimento espírita regional.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> REUNIR IV | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AGOSTO (Mês 08) -->
+            <div class="month-row" data-month="08">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">08</div>
+                        <h3 class="month-name">Agosto</h3>
+                    </div>
+                    <span class="month-card-count">3 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>01 de Agosto — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>01 de Agosto — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Estudo</span>
+                            <div class="activity-title">3º Círculo de Cultura Espírita (CCE)</div>
+                            <div class="activity-description">Terceira etapa dos círculos de cultura espírita continuando o aprofundamento doutrinário e formação intelectual-moral dos participantes.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Estudos Espíritas | <strong>Diretrizes:</strong> 1 (Difusão) e 2 (Universalidade)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>22 de Agosto</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-encontro">Encontro Estadual</span>
+                            <div class="activity-title">PRÉ-ENEFE — Encontro Estadual da Família Espírita</div>
+                            <div class="activity-description">Preparatório para o ENEFE com o objetivo de incentivar as Instituições Espíritas a serem novos núcleos de atividades durante o período do carnaval.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Infância, Juventude e Família | <strong>Diretrizes:</strong> 4 (Adequação) e 10 (Juventude)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETEMBRO (Mês 09) -->
+            <div class="month-row" data-month="09">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">09</div>
+                        <h3 class="month-name">Setembro</h3>
+                    </div>
+                    <span class="month-card-count">4 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>05 de Setembro — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>05 de Setembro — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Capacitação</span>
+                            <div class="activity-title">Evangelização das Famílias no Centro Espírita</div>
+                            <div class="activity-description">Capacitação sobre Evangelização das Famílias no Centro Espírita, promovendo o fortalecimento da evangelização e orientação familiar.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Infância, Juventude e Família | <strong>Diretrizes:</strong> 1 (Difusão) e 10 (Juventude e Família)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>19 de Setembro</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Seminário</span>
+                            <div class="activity-title">Seminário de Atendimento Espiritual</div>
+                            <div class="activity-description">Capacitação especializada para atendentes da área de atendimento espiritual focando em acolhida, orientação, desenvolvimento de virtudes e práticas de apoio espiritual.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Atendimento Espiritual | <strong>Diretrizes:</strong> 1 (Difusão) e 9 (Participação Social)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>26 de Setembro</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-encontro">Confraternização Regional</span>
+                            <div class="activity-title">RECOME — Reunião de Confraternização das Mocidades</div>
+                            <div class="activity-description">Grande encontro das juventudes espíritas para confraternização, aprofundamento doutrinário e engajamento de jovens nas atividades do movimento.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Infância, Juventude e Família | <strong>Diretriz:</strong> 10 (Orientação à Juventude)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OUTUBRO (Mês 10) -->
+            <div class="month-row" data-month="10">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">10</div>
+                        <h3 class="month-name">Outubro</h3>
+                    </div>
+                    <span class="month-card-count">3 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>03 de Outubro — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>03 de Outubro — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Estudo</span>
+                            <div class="activity-title">4º Círculo de Cultura Espírita (CCE)</div>
+                            <div class="activity-description">Quarta etapa do ciclo de estudos espíritas consolidando a formação filosófica e doutrinária dos participantes com aprofundamento temático.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Estudos Espíritas | <strong>Diretrizes:</strong> 1 (Difusão) e 2 (Universalidade)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>17 de Outubro</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-encontro">Mostra e Simpósio</span>
+                            <div class="activity-title">EDUCARTE — Mostra de Arte Espírita & Simpósio</div>
+                            <div class="activity-description">Evento integrado apresentando trabalhos artísticos de centros espíritas com simpósio temático. Promove a difusão da doutrina através da manifestação cultural e artística.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Arte | <strong>Diretrizes:</strong> 1 (Difusão) e 3 (Integração)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOVEMBRO (Mês 11) -->
+            <div class="month-row" data-month="11">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">11</div>
+                        <h3 class="month-name">Novembro</h3>
+                    </div>
+                    <span class="month-card-count">4 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>07 de Novembro — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>07 de Novembro — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-confraternizacao">Confraternização Regional</span>
+                            <div class="activity-title">REPIEDUC — Reunião de Presidentes e Dirigentes</div>
+                            <div class="activity-description">Roda de conversa com os líderes das instituições espíritas de Duque de Caxias para discussão de estratégias, integração do movimento e fortalecimento de laços.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> ARAE / UNIFICAÇÃO | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>21 de Novembro</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-capacitacao">Seminário</span>
+                            <div class="activity-title">Seminário de Mediunidade</div>
+                            <div class="activity-description">Seminário temas propostos da mediunidade, visando a segurança mediúnica, responsabilidades do médium e desenvolvimento consciente das faculdades mediúnicas.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Estudos da Mediunidade | <strong>Diretrizes:</strong> 1 (Difusão) e 7 (Formação Continuada)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>28 de Novembro</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-confraternizacao">Encontro & Confraternização</span>
+                            <div class="activity-title">ENFAMÍLIA — Encontro da Família Espírita</div>
+                            <div class="activity-description">Encontro da família espírita integrando trabalhadores, famílias e simpatizantes, promovendo uma confraternização geral de todo o movimento espírita.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> Infância, Juventude e Família | <strong>Diretrizes:</strong> 3 (Integração), 6 (Unificação) e 10 (Família)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DEZEMBRO (Mês 12) -->
+            <div class="month-row" data-month="12">
+                <div class="month-row-header">
+                    <div class="month-title-group">
+                        <div class="month-badge-num">12</div>
+                        <h3 class="month-name">Dezembro</h3>
+                    </div>
+                    <span class="month-card-count">2 Atividades</span>
+                </div>
+                <div class="month-cards-grid">
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>05 de Dezembro — Parte I</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-eleicao">Reunião do Conselho</span>
+                            <div class="activity-title">UNIFICAÇÃO — Reunião do Conselho</div>
+                            <div class="activity-description">Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 3 (Integração) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+
+                    <div class="month-card">
+                        <div class="month-card-header">
+                            <div>05 de Dezembro — Parte II</div>
+                        </div>
+                        <div class="month-card-body">
+                            <span class="activity-type type-confraternizacao">Confraternização</span>
+                            <div class="activity-title">Confraternização de Encerramento</div>
+                            <div class="activity-description">Celebração de encerramento do ano reunindo trabalhadores e lideranças para agradecimento pelo trabalho realizado, confraternização fraterna e reafirmação de compromissos.</div>
+                            <div class="activity-diretriz"><strong>Competência:</strong> UNIFICAÇÃO / ADM | <strong>Diretrizes:</strong> 4 (Adequação) e 6 (Unificação)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Resumo por Competência -->
+        <div class="timeline">
+            <h2>Atividades por Área Responsável</h2>
+            <div class="timeline-items">
+                <!-- UNIFICAÇÃO / ADM -->
+                <div class="timeline-item">
+                    <div class="timeline-month">UNIFICAÇÃO<br>/ ADM</div>
+                    <div class="timeline-content">
+                        <h4>Área de Unificação e Administração</h4>
+                        <p><strong>10/01, 14/02, 07/03, 04/04, 02/05, 06/06, 04/07, 01/08, 05/09, 03/10, 07/11, 05/12</strong> - Reuniões do Conselho | <strong>10/01</strong> - Planejamento e Adequação | <strong>07/11</strong> - REPIEDUC | <strong>05/12</strong> - Confraternização de Encerramento</p>
+                    </div>
+                </div>
+
+                <!-- Estudos Espíritas -->
+                <div class="timeline-item">
+                    <div class="timeline-month">Estudos<br>Espíritas</div>
+                    <div class="timeline-content">
+                        <h4>Divisão de Estudos Espíritas</h4>
+                        <p><strong>14/02</strong> - Roda de Conversa (Estudos Espíritas) | <strong>04/04, 06/06, 01/08, 03/10</strong> - Círculos de Cultura Espírita | <strong>11-18/04</strong> - Semana 170 Anos Livro Espíritos</p>
+                    </div>
+                </div>
+
+                <!-- Infância, Juventude e Família -->
+                <div class="timeline-item">
+                    <div class="timeline-month">Infância,<br>Juventude<br>Família</div>
+                    <div class="timeline-content">
+                        <h4>Divisão de Infância, Juventude e Família</h4>
+                        <p><strong>07/03</strong> - Capacitação Evangelizadores | <strong>25/04</strong> - ENEDIN | <strong>22/08</strong> - PRÉ-ENEFE | <strong>05/09</strong> - Evangelização das Famílias | <strong>26/09</strong> - RECOME | <strong>28/11</strong> - ENFAMÍLIA</p>
+                    </div>
+                </div>
+
+                <!-- Demais Áreas -->
+                <div class="timeline-item">
+                    <div class="timeline-month">Demais<br>Áreas</div>
+                    <div class="timeline-content">
+                        <h4>Capacitações por Especialidade</h4>
+                        <p><strong>20/06</strong> - ARAE (3º Encontro Tarefeiros) | <strong>02/05</strong> - SAPSE (Assistência Social) | <strong>04/07</strong> - ACSE (Comunicação) | <strong>19/09</strong> - Atendimento Espiritual | <strong>17/10</strong> - EDUCARTE (Arte) | <strong>21/11</strong> - Mediunidade</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Princípios Orientadores -->
+        <div class="intro" style="border-left-color: #8b6b47;">
+            <h2 style="color: #8b6b47;">Princípios Orientadores</h2>
+            <p style="margin-bottom: 1rem;"><strong>Alinhamento às Diretrizes da FEB 2023-2027:</strong> Cada atividade está fundamentada em uma ou mais diretrizes da Federação Espírita Brasileira, assegurando que o trabalho do 7º CEU contribua coerentemente para os objetivos do movimento espírita brasileiro.</p>
+            
+            <p style="margin-bottom: 1rem;"><strong>Responsabilidade Compartilhada:</strong> A indicação clara da competência (área responsável) para cada atividade garante transparência, facilitação e continuidade das ações planejadas.</p>
+            
+            <p style="margin-bottom: 1rem;"><strong>Círculos de Cultura Espírita Permanentes:</strong> Os quatro círculos de estudos (CCE) ao longo do ano garantem formação doutrinária continuada e aprofundamento intelectual-moral dos participantes.</p>
+            
+            <p><strong>Integração de Todas as Áreas:</strong> O calendário contempla capacitações e atividades de múltiplas áreas funcionais (Estudos, Juventude, Família, Assistência, Comunicação, Arte, Mediunidade, Atendimento), promovendo unificação genuína.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p><strong>7º Conselho Espírita de Unificação — Duque de Caxias</strong></p>
+        <p><strong>34 Atividades Estratégicas Planejadas para 2027</strong></p>
+        <p style="margin-top: 1rem; opacity: 0.9;">Cada atividade designa sua área responsável e alinhamento doutrinário</p>
+        <p style="font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.8;">Alinhado às 11 Diretrizes da Federação Espírita Brasileira 2023-2027</p>
+        <p style="font-size: 0.85rem; margin-top: 0.3rem; opacity: 0.8;">Calendário estruturado conforme aprovado pelos órgãos responsáveis</p>
+    </div>
+
+    <!-- EXPAND CARD MODAL -->
+    <div id="cardModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-container" id="modalContainer">
+            <button class="modal-close-btn" id="modalCloseBtn" aria-label="Fechar">&times;</button>
+            <div class="modal-header" id="modalHeader">
+                <div class="modal-date" id="modalDate">Data</div>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Preenchido via JavaScript ao clicar -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('cardModal');
+            const modalContainer = document.getElementById('modalContainer');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+            const modalHeader = document.getElementById('modalHeader');
+            const modalDate = document.getElementById('modalDate');
+            const modalBody = document.getElementById('modalBody');
+
+            // Abrir Modal de Expansão do Card
+            const cards = document.querySelectorAll('.month-card');
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const row = card.closest('.month-row');
+                    const header = card.querySelector('.month-card-header');
+                    const body = card.querySelector('.month-card-body');
+                    
+                    // Cor do mês
+                    const headerStyle = window.getComputedStyle(header);
+                    const cardStyle = window.getComputedStyle(card);
+                    
+                    modalHeader.style.background = headerStyle.background;
+                    modalContainer.style.borderColor = cardStyle.borderColor;
+                    modalDate.textContent = header.innerText.trim();
+                    
+                    // Clonar o conteúdo do corpo
+                    modalBody.innerHTML = body.innerHTML;
+
+                    // Exibir Modal
+                    modal.classList.add('active');
+                    modal.setAttribute('aria-hidden', 'false');
+                    document.body.style.overflow = 'hidden'; // Evita rolagem de fundo
+                });
+            });
+
+            // Função para Fechar Modal
+            const closeModal = () => {
+                modal.classList.remove('active');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            };
+
+            modalCloseBtn.addEventListener('click', closeModal);
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
