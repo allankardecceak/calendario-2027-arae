@@ -1,0 +1,8 @@
+# Arquivo com o token GitHub — NUNCA enviar para o repositório
+Token.txt
+token.txt
+*.token
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db

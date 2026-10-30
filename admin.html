@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Calendário ARAE 2027</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+            --border: #2e3248; --accent: #4f7ef7; --gold: #d4af37;
+            --danger: #ef4444; --success: #22c55e;
+            --text: #e2e8f0; --text-muted: #94a3b8; --radius: 12px;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+        /* LOGIN */
+        #loginScreen {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(ellipse at 60% 30%, rgba(26,42,94,0.27) 0%, transparent 70%), var(--bg);
+        }
+        .login-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 3rem; width: 100%; max-width: 440px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        }
+        .login-logo { text-align: center; margin-bottom: 2rem; }
+        .login-logo .icon {
+            width: 64px; height: 64px; background: linear-gradient(135deg, #1a4d6d, #4f7ef7);
+            border-radius: 16px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; margin: 0 auto 1rem;
+        }
+        .login-logo h1 { font-size: 1.4rem; font-weight: 700; }
+        .login-logo p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label {
+            display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted);
+            margin-bottom: 0.5rem; letter-spacing: 0.03em; text-transform: uppercase;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 10px; padding: 0.8rem 1rem; color: var(--text);
+            font-family: 'Inter', sans-serif; font-size: 0.95rem; outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,126,247,0.15);
+        }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .form-group select option { background: var(--surface); }
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.75rem 1.4rem; border-radius: 10px; border: none; cursor: pointer;
+            font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; transition: all 0.2s;
+        }
+        .btn-primary { background: var(--accent); color: white; width: 100%; justify-content: center; font-size: 1rem; padding: 0.9rem; }
+        .btn-primary:hover { background: #3a6af5; transform: translateY(-1px); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #16a34a; }
+        .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--border); }
+        .btn-gold { background: linear-gradient(135deg, var(--gold), #ffd700); color: #1a1200; font-weight: 700; }
+        .btn-gold:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .login-error {
+            background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.88rem;
+            color: #fca5a5; margin-bottom: 1rem; display: none;
+        }
+
+        /* ADMIN LAYOUT */
+        #adminPanel { display: none; min-height: 100vh; }
+        .topbar {
+            background: var(--surface); border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .topbar-left { display: flex; align-items: center; gap: 1rem; }
+        .topbar-logo { width: 38px; height: 38px; background: linear-gradient(135deg, #1a4d6d, #4f7ef7); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .topbar-title { font-weight: 700; font-size: 1rem; }
+        .topbar-sub { font-size: 0.78rem; color: var(--text-muted); }
+        .topbar-right { display: flex; align-items: center; gap: 1rem; }
+        .status-badge { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-muted); background: var(--bg); padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid var(--border); }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .admin-content { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+        /* STATS */
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.5rem; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+        /* SECTION */
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+        .section-title { font-size: 1.2rem; font-weight: 700; }
+
+        /* TABLE */
+        .events-table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 2rem; }
+        .table-filter { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+        .table-filter input { flex: 1; min-width: 200px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.55rem 0.9rem; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.88rem; outline: none; }
+        .table-filter input:focus { border-color: var(--accent); }
+        .table-filter select { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.55rem 0.9rem; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.88rem; outline: none; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { background: var(--surface2); padding: 0.75rem 1rem; text-align: left; font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+        tbody tr { border-top: 1px solid var(--border); transition: background 0.15s; }
+        tbody tr:hover { background: var(--surface2); }
+        td { padding: 0.85rem 1rem; font-size: 0.88rem; vertical-align: middle; }
+        .td-title { font-weight: 600; }
+        .td-date { color: var(--text-muted); white-space: nowrap; }
+        .type-badge { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+        .badge-eleicao { background: rgba(15,118,110,0.2); color: #2dd4bf; }
+        .badge-capacitacao { background: rgba(3,105,161,0.2); color: #38bdf8; }
+        .badge-encontro { background: rgba(107,33,168,0.2); color: #c084fc; }
+        .badge-confraternizacao { background: rgba(194,65,12,0.2); color: #fb923c; }
+        .has-image { font-size: 0.75rem; color: var(--gold); }
+        .actions-cell { display: flex; gap: 0.5rem; justify-content: flex-end; }
+        .btn-icon { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; transition: all 0.15s; }
+        .btn-icon:hover { color: var(--accent); border-color: var(--accent); background: rgba(79,126,247,0.1); }
+        .btn-icon.del:hover { color: var(--danger); border-color: var(--danger); background: rgba(239,68,68,0.1); }
+
+        /* MODAL */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; opacity: 0; visibility: hidden; transition: all 0.25s; overflow-y: auto; }
+        .modal-overlay.open { opacity: 1; visibility: visible; }
+        .modal-box { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; width: 100%; max-width: 680px; padding: 2rem; box-shadow: 0 30px 80px rgba(0,0,0,0.6); transform: translateY(20px); transition: transform 0.3s; margin: auto; }
+        .modal-overlay.open .modal-box { transform: translateY(0); }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+        .modal-title { font-size: 1.15rem; font-weight: 700; }
+        .modal-close { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text-muted); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
+        .modal-close:hover { color: var(--danger); border-color: var(--danger); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-row .form-group { margin-bottom: 0; }
+        .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+        /* UPLOAD */
+        .upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
+        .upload-area:hover { border-color: var(--accent); background: rgba(79,126,247,0.05); }
+        .upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+        .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .upload-hint { font-size: 0.88rem; color: var(--text-muted); }
+        .upload-hint strong { color: var(--accent); }
+        .img-preview { margin-top: 1rem; display: none; text-align: center; }
+        .img-preview img { max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; }
+        .img-preview-actions { display: flex; justify-content: center; margin-top: 0.5rem; }
+        .prog-bar-wrap { height: 4px; background: var(--border); border-radius: 2px; margin-top: 0.75rem; display: none; overflow: hidden; }
+        .prog-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 2px; transition: width 0.3s; }
+
+        /* MODAL ACTIONS */
+        .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end; }
+
+        /* PUBLISH */
+        .publish-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+        .publish-info h3 { font-size: 1rem; font-weight: 600; }
+        .publish-info p { font-size: 0.83rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+        /* TOAST */
+        #toastBox { position: fixed; bottom: 2rem; right: 2rem; z-index: 500; display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none; }
+        .toast { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.2rem; font-size: 0.88rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 0.6rem; animation: toastIn 0.3s ease; max-width: 320px; }
+        .toast-ok  { border-left: 3px solid var(--success); }
+        .toast-err { border-left: 3px solid var(--danger); }
+        .toast-inf { border-left: 3px solid var(--accent); }
+        @keyframes toastIn { from { opacity:0; transform: translateX(40px); } to { opacity:1; transform: translateX(0); } }
+
+        /* SPINNER */
+        .spin { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spinning 0.6s linear infinite; display: inline-block; vertical-align: middle; }
+        @keyframes spinning { to { transform: rotate(360deg); } }
+
+        /* EMPTY */
+        .empty { text-align: center; padding: 3rem; color: var(--text-muted); font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .topbar { padding: 0.8rem 1rem; }
+            .admin-content { padding: 1rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .publish-section { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+    <div class="login-card">
+        <div class="login-logo">
+            <div class="icon">&#128197;</div>
+            <h1>Painel Admin</h1>
+            <p>Calendário ARAE 2027</p>
+        </div>
+        <div class="login-error" id="loginErr"></div>
+        <div class="form-group">
+            <label>GitHub Personal Access Token</label>
+            <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxx" autocomplete="off">
+        </div>
+        <button class="btn btn-primary" id="loginBtn" onclick="doLogin()">
+            <span id="loginBtnTxt">Entrar no Painel</span>
+        </button>
+        <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:1.2rem;">
+            &#128274; Token usado apenas para autenticar com o GitHub.
+        </p>
+    </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">&#128197;</div>
+            <div>
+                <div class="topbar-title">Calendário ARAE 2027</div>
+                <div class="topbar-sub">Painel de Administração</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div class="status-badge"><div class="status-dot"></div><span id="userLabel">Conectado</span></div>
+            <button class="btn btn-secondary" style="padding:0.5rem 0.9rem;font-size:0.82rem;" onclick="doLogout()">Sair</button>
+        </div>
+    </div>
+
+    <div class="admin-content">
+        <div class="stats-row">
+            <div class="stat-card"><div class="stat-value" id="stTotal">—</div><div class="stat-label">Total de eventos</div></div>
+            <div class="stat-card"><div class="stat-value" id="stMeses">—</div><div class="stat-label">Meses com eventos</div></div>
+            <div class="stat-card"><div class="stat-value" id="stImg" style="color:var(--gold)">—</div><div class="stat-label">Com imagem</div></div>
+            <div class="stat-card"><div class="stat-value" id="stSem" style="color:var(--text-muted)">—</div><div class="stat-label">Sem imagem</div></div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title">&#128203; Eventos do Calendário</div>
+            <button class="btn btn-primary" style="padding:0.6rem 1.2rem;" onclick="openModal()">+ Novo Evento</button>
+        </div>
+
+        <div class="events-table-wrap">
+            <div class="table-filter">
+                <input type="text" id="fSearch" placeholder="&#128269; Buscar evento..." oninput="renderTable()">
+                <select id="fMesFil" onchange="renderTable()">
+                    <option value="">Todos os meses</option>
+                    <option value="1">Janeiro</option><option value="2">Fevereiro</option>
+                    <option value="3">Março</option><option value="4">Abril</option>
+                    <option value="5">Maio</option><option value="6">Junho</option>
+                    <option value="7">Julho</option><option value="8">Agosto</option>
+                    <option value="9">Setembro</option><option value="10">Outubro</option>
+                    <option value="11">Novembro</option><option value="12">Dezembro</option>
+                </select>
+            </div>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead><tr>
+                        <th>Mês</th><th>Data</th><th>Título</th><th>Tipo</th><th>Img</th><th style="text-align:right;">Ações</th>
+                    </tr></thead>
+                    <tbody id="tBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="publish-section">
+            <div class="publish-info">
+                <h3>&#128640; Publicar Alterações</h3>
+                <p>Salva o calendário no GitHub. O Vercel publica automaticamente em ~30 segundos.</p>
+            </div>
+            <button class="btn btn-gold" id="pubBtn" onclick="publishChanges()">&#11014; Publicar no GitHub</button>
+        </div>
+    </div>
+</div>
+
+<!-- EVENT MODAL -->
+<div class="modal-overlay" id="evModal" onclick="bgClick(event)">
+    <div class="modal-box">
+        <div class="modal-header">
+            <div class="modal-title" id="mTitle">Novo Evento</div>
+            <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+        </div>
+        <input type="hidden" id="editIdx" value="-1">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Mês *</label>
+                <select id="fMes">
+                    <option value="1">Janeiro</option><option value="2">Fevereiro</option>
+                    <option value="3">Março</option><option value="4">Abril</option>
+                    <option value="5">Maio</option><option value="6">Junho</option>
+                    <option value="7">Julho</option><option value="8">Agosto</option>
+                    <option value="9">Setembro</option><option value="10">Outubro</option>
+                    <option value="11">Novembro</option><option value="12">Dezembro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Data exibida *</label>
+                <input type="text" id="fData" placeholder="Ex: 15 de Março">
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+            <label>Título do evento *</label>
+            <input type="text" id="fTitulo" placeholder="Ex: UNIFICAÇÃO — Reunião do Conselho">
+        </div>
+
+        <div class="form-row" style="margin-top:1rem;">
+            <div class="form-group">
+                <label>Tipo / Categoria *</label>
+                <select id="fTipo">
+                    <option value="type-eleicao">Reunião e Planejamento</option>
+                    <option value="type-capacitacao">Estudos, Capacitações e Seminários</option>
+                    <option value="type-encontro">Encontros Regionais e Temáticos</option>
+                    <option value="type-confraternizacao">Confraternizações</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Rótulo do tipo *</label>
+                <input type="text" id="fLabel" placeholder="Ex: Reunião do Conselho">
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+            <label>Descrição *</label>
+            <textarea id="fDesc" placeholder="Descrição detalhada do evento..."></textarea>
+        </div>
+
+        <div class="form-row" style="margin-top:1rem;">
+            <div class="form-group">
+                <label>Competência</label>
+                <input type="text" id="fComp" placeholder="Ex: UNIFICAÇÃO / ADM">
+            </div>
+            <div class="form-group">
+                <label>Diretrizes FEB</label>
+                <input type="text" id="fDir" placeholder="Ex: 3 (Integração) e 6 (Unificação)">
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-group">
+            <label>&#128247; Imagem do evento (opcional)</label>
+            <div class="upload-area" id="upArea">
+                <input type="file" id="fFile" accept="image/*" onchange="onFileChange(event)">
+                <div class="upload-icon">&#128444;&#65039;</div>
+                <div class="upload-hint"><strong>Clique aqui</strong> ou arraste uma imagem — JPG, PNG, WebP até 5MB</div>
+                <div class="prog-bar-wrap" id="progWrap"><div class="prog-bar" id="progBar" style="width:0%"></div></div>
+            </div>
+            <div class="img-preview" id="imgPrev">
+                <img id="prevImg" src="" alt="Preview">
+                <div class="img-preview-actions">
+                    <button class="btn btn-secondary" style="font-size:0.8rem;padding:0.4rem 0.8rem;" onclick="clearImg()">&#128465; Remover</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            <button class="btn btn-success" id="saveBtn" onclick="saveEvent()">&#128190; Salvar Evento</button>
+        </div>
+    </div>
+</div>
+
+<div id="toastBox"></div>
+
+<script>
+const OWNER = 'allankardecceak';
+const REPO  = 'calendario-2027-arae';
+const BRANCH = 'main';
+const EFILE  = 'events.json';
+const IDIR   = 'imagens';
+
+var token = '';
+var data = null;
+var sha  = '';
+var pendingFile = null;
+
+var MESES = ['','Janeiro','Fevereiro','Marco','Abril','Maio','Junho',
+             'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+var BADGES = {
+    'type-eleicao':'badge-eleicao',
+    'type-capacitacao':'badge-capacitacao',
+    'type-encontro':'badge-encontro',
+    'type-confraternizacao':'badge-confraternizacao'
+};
+
+// AUTO LOGIN
+window.onload = function() {
+    var saved = localStorage.getItem('arae_tok');
+    if (saved) { document.getElementById('tokenInput').value = saved; doLogin(); }
+};
+
+function gh(path, method, body) {
+    var opts = { headers: { 'Authorization':'token '+token, 'Accept':'application/vnd.github.v3+json', 'Content-Type':'application/json' } };
+    if (method) { opts.method = method; opts.body = JSON.stringify(body); }
+    return fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/'+path, opts);
+}
+
+async function doLogin() {
+    var t = document.getElementById('tokenInput').value.trim();
+    if (!t) { setErr('Informe o token.'); return; }
+    setBtnLogin(true);
+    token = t;
+    try {
+        var r = await gh('contents/'+EFILE);
+        if (!r.ok) throw new Error('Token inválido ou repositório não encontrado.');
+        var d = await r.json();
+        sha  = d.sha;
+        data = JSON.parse(atob(d.content.replace(/\n/g,'')));
+        localStorage.setItem('arae_tok', t);
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminPanel').style.display  = 'block';
+        document.getElementById('userLabel').textContent = 'Conectado ao GitHub';
+        updateStats(); renderTable();
+        toast('ok','Login realizado com sucesso!');
+    } catch(e) { setErr(e.message); token=''; }
+    setBtnLogin(false);
+}
+
+function setBtnLogin(loading) {
+    var btn = document.getElementById('loginBtn');
+    var txt = document.getElementById('loginBtnTxt');
+    btn.disabled = loading;
+    txt.innerHTML = loading ? '<span class="spin"></span> Verificando...' : 'Entrar no Painel';
+}
+
+function setErr(m) {
+    var el = document.getElementById('loginErr');
+    el.textContent = m; el.style.display = 'block';
+}
+
+function doLogout() {
+    token=''; data=null;
+    localStorage.removeItem('arae_tok');
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('adminPanel').style.display  = 'none';
+    document.getElementById('tokenInput').value = '';
+    document.getElementById('loginErr').style.display = 'none';
+}
+
+function updateStats() {
+    var evs = data.eventos;
+    document.getElementById('stTotal').textContent = evs.length;
+    document.getElementById('stMeses').textContent = new Set(evs.map(function(e){return e.mes;})).size;
+    document.getElementById('stImg').textContent   = evs.filter(function(e){return e.imagem;}).length;
+    document.getElementById('stSem').textContent   = evs.filter(function(e){return !e.imagem;}).length;
+}
+
+function renderTable() {
+    var search = document.getElementById('fSearch').value.toLowerCase();
+    var mes    = document.getElementById('fMesFil').value;
+    var evs    = data.eventos.slice();
+    if (mes)    evs = evs.filter(function(e){return String(e.mes)===mes;});
+    if (search) evs = evs.filter(function(e){
+        return e.titulo.toLowerCase().includes(search) ||
+               e.data.toLowerCase().includes(search) ||
+               (e.competencia||'').toLowerCase().includes(search);
+    });
+    var body = document.getElementById('tBody');
+    if (!evs.length) { body.innerHTML='<tr><td colspan="6"><div class="empty">Nenhum evento encontrado.</div></td></tr>'; return; }
+    body.innerHTML = evs.map(function(ev){
+        var ri = data.eventos.indexOf(ev);
+        var bc = BADGES[ev.tipo] || 'badge-capacitacao';
+        return '<tr>'+
+            '<td class="td-date">'+MESES[ev.mes]+'</td>'+
+            '<td class="td-date">'+ev.data+'</td>'+
+            '<td class="td-title">'+ev.titulo+'</td>'+
+            '<td><span class="type-badge '+bc+'">'+ev.tipoLabel+'</span></td>'+
+            '<td>'+(ev.imagem?'<span class="has-image">&#11088;</span>':'<span style="color:var(--text-muted)">—</span>')+'</td>'+
+            '<td><div class="actions-cell">'+
+                '<button class="btn-icon" onclick="openModal('+ri+')" title="Editar">&#9999;&#65039;</button>'+
+                '<button class="btn-icon del" onclick="delEvent('+ri+')" title="Excluir">&#128465;</button>'+
+            '</div></td></tr>';
+    }).join('');
+}
+
+function openModal(idx) {
+    if (idx === undefined) idx = -1;
+    document.getElementById('editIdx').value = idx;
+    clearImg();
+    if (idx < 0) {
+        document.getElementById('mTitle').textContent = 'Novo Evento';
+        ['fData','fTitulo','fLabel','fDesc','fComp','fDir'].forEach(function(id){document.getElementById(id).value='';});
+        document.getElementById('fMes').value='1';
+        document.getElementById('fTipo').value='type-eleicao';
+    } else {
+        var ev = data.eventos[idx];
+        document.getElementById('mTitle').textContent = 'Editar Evento';
+        document.getElementById('fMes').value   = ev.mes;
+        document.getElementById('fData').value  = ev.data;
+        document.getElementById('fTitulo').value= ev.titulo;
+        document.getElementById('fTipo').value  = ev.tipo;
+        document.getElementById('fLabel').value = ev.tipoLabel;
+        document.getElementById('fDesc').value  = ev.descricao;
+        document.getElementById('fComp').value  = ev.competencia||'';
+        document.getElementById('fDir').value   = ev.diretrizes||'';
+        if (ev.imagem) {
+            document.getElementById('prevImg').src = ev.imagem;
+            document.getElementById('imgPrev').style.display = 'block';
+            document.getElementById('upArea').style.display  = 'none';
+        }
+    }
+    document.getElementById('evModal').classList.add('open');
+}
+
+function closeModal() {
+    document.getElementById('evModal').classList.remove('open');
+    pendingFile = null;
+}
+
+function bgClick(e) { if(e.target===document.getElementById('evModal')) closeModal(); }
+
+function onFileChange(e) {
+    var f = e.target.files[0];
+    if (!f) return;
+    if (f.size > 5*1024*1024) { toast('err','Imagem muito grande. Máximo 5MB.'); return; }
+    pendingFile = f;
+    var r = new FileReader();
+    r.onload = function(ev){
+        document.getElementById('prevImg').src = ev.target.result;
+        document.getElementById('imgPrev').style.display = 'block';
+        document.getElementById('upArea').style.display  = 'none';
+    };
+    r.readAsDataURL(f);
+}
+
+function clearImg() {
+    pendingFile = null;
+    document.getElementById('imgPrev').style.display = 'none';
+    document.getElementById('upArea').style.display  = 'block';
+    document.getElementById('prevImg').src = '';
+    document.getElementById('fFile').value = '';
+}
+
+function uploadImg(file) {
+    return new Promise(function(resolve, reject){
+        var r = new FileReader();
+        r.onload = async function(ev){
+            try {
+                var b64  = ev.target.result.split(',')[1];
+                var ext  = file.name.split('.').pop();
+                var name = 'img_'+Date.now()+'.'+ext;
+                var path = IDIR+'/'+name;
+                document.getElementById('progWrap').style.display='block';
+                document.getElementById('progBar').style.width='40%';
+                var res = await gh('contents/'+path,'PUT',{message:'Admin: imagem '+name,content:b64,branch:BRANCH});
+                document.getElementById('progBar').style.width='100%';
+                setTimeout(function(){document.getElementById('progWrap').style.display='none';document.getElementById('progBar').style.width='0%';},600);
+                if (!res.ok) { var err=await res.json(); throw new Error(err.message||'Erro ao enviar imagem.'); }
+                resolve('https://raw.githubusercontent.com/'+OWNER+'/'+REPO+'/'+BRANCH+'/'+path);
+            } catch(e){ reject(e); }
+        };
+        r.readAsDataURL(file);
+    });
+}
+
+async function saveEvent() {
+    var titulo = document.getElementById('fTitulo').value.trim();
+    var dt     = document.getElementById('fData').value.trim();
+    var desc   = document.getElementById('fDesc').value.trim();
+    if (!titulo||!dt||!desc) { toast('err','Preencha os campos obrigatórios (*).'); return; }
+    var btn = document.getElementById('saveBtn');
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Salvando...';
+    try {
+        var idx = parseInt(document.getElementById('editIdx').value);
+        var mes = parseInt(document.getElementById('fMes').value);
+        var img = idx>=0 ? (data.eventos[idx].imagem||'') : '';
+        if (pendingFile) { toast('inf','Enviando imagem...'); img = await uploadImg(pendingFile); }
+        var ev = {
+            id: idx>=0 ? data.eventos[idx].id : 'ev-'+Date.now(),
+            mes:mes, nomeMes:MESES[mes], data:dt,
+            tipo:document.getElementById('fTipo').value,
+            tipoLabel:document.getElementById('fLabel').value.trim(),
+            titulo:titulo, descricao:desc,
+            competencia:document.getElementById('fComp').value.trim(),
+            diretrizes:document.getElementById('fDir').value.trim(),
+            imagem:img
+        };
+        if (idx>=0) { data.eventos[idx]=ev; }
+        else { data.eventos.push(ev); data.eventos.sort(function(a,b){return a.mes-b.mes;}); }
+        data.meta.ultimaAtualizacao = new Date().toISOString().split('T')[0];
+        closeModal(); updateStats(); renderTable();
+        toast('ok','Evento "'+titulo+'" salvo! Clique em Publicar para enviar ao GitHub.');
+    } catch(e) { toast('err',e.message); }
+    btn.disabled=false; btn.innerHTML='&#128190; Salvar Evento';
+}
+
+function delEvent(idx) {
+    if (!confirm('Excluir o evento:\n"'+data.eventos[idx].titulo+'"?')) return;
+    data.eventos.splice(idx,1);
+    updateStats(); renderTable();
+    toast('ok','Evento removido. Publique para aplicar.');
+}
+
+async function publishChanges() {
+    var btn = document.getElementById('pubBtn');
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Publicando...';
+    try {
+        var r = await gh('contents/'+EFILE);
+        if (!r.ok) throw new Error('Não foi possível buscar o arquivo.');
+        sha = (await r.json()).sha;
+        var content = btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
+        var res = await gh('contents/'+EFILE,'PUT',{
+            message:'Admin: atualiza eventos - '+new Date().toLocaleString('pt-BR'),
+            content:content, sha:sha, branch:BRANCH
+        });
+        if (!res.ok) { var e=await res.json(); throw new Error(e.message||'Erro ao publicar.'); }
+        sha = (await res.json()).content.sha;
+        toast('ok','Publicado! O site será atualizado em ~30 segundos.');
+    } catch(e) { toast('err',e.message); }
+    btn.disabled=false; btn.innerHTML='&#11014; Publicar no GitHub';
+}
+
+function toast(type, msg) {
+    var box = document.getElementById('toastBox');
+    var el  = document.createElement('div');
+    var cls = type==='ok'?'toast-ok':type==='err'?'toast-err':'toast-inf';
+    el.className = 'toast '+cls;
+    el.textContent = msg;
+    box.appendChild(el);
+    setTimeout(function(){el.remove();},4500);
+}
+
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>
