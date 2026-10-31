@@ -4,7 +4,7 @@
     "subtitulo": "7º Conselho Espírita de Unificação — Duque de Caxias",
     "area": "Área de Ações Estratégicas (ARAE)",
     "totalAtividades": 35,
-    "ultimaAtualizacao": "2026-10-30"
+    "ultimaAtualizacao": "2026-10-31"
   },
   "eventos": [
     {
@@ -32,6 +32,19 @@
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "6 (Unificação) e 7 (Formação)",
       "imagem": "https://raw.githubusercontent.com/allankardecceak/calendario-2027-arae/main/imagens/img_1793382595023.png"
+    },
+    {
+      "id": "ev-1793409528197",
+      "mes": 1,
+      "nomeMes": "Janeiro",
+      "data": "14 de Janeiro",
+      "tipo": "type-eleicao",
+      "tipoLabel": "Teste  de Planejamento",
+      "titulo": "Test",
+      "descricao": "teste",
+      "competencia": "UNIFICAÇÃO",
+      "diretrizes": "3",
+      "imagem": ""
     },
     {
       "id": "fev-01",
