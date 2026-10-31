@@ -724,17 +724,55 @@
 
         .summary-month-title {
             display: inline-block;
-            background: #fef08a; /* Amarelo clássico com alto contraste e legibilidade */
-            color: #854d0e;
+            color: #ffffff;
             font-weight: 800;
-            font-size: 1.05rem;
-            padding: 0.3rem 0.9rem;
+            font-size: 0.95rem;
+            padding: 0.35rem 0.95rem;
             border-radius: 6px;
-            margin-bottom: 0.7rem;
+            margin-bottom: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            border-left: 4px solid #ca8a04;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
+
+        /* Cores de Destaque por Mês no Resumo (idênticas aos cards dos eventos) */
+        .summary-month-block[data-month="01"] .summary-month-title { background: linear-gradient(135deg, #0d9488, #0f766e); }
+        .summary-month-block[data-month="01"] .summary-event-date { color: #0d9488; }
+
+        .summary-month-block[data-month="02"] .summary-month-title { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .summary-month-block[data-month="02"] .summary-event-date { color: #2563eb; }
+
+        .summary-month-block[data-month="03"] .summary-month-title { background: linear-gradient(135deg, #059669, #047857); }
+        .summary-month-block[data-month="03"] .summary-event-date { color: #059669; }
+
+        .summary-month-block[data-month="04"] .summary-month-title { background: linear-gradient(135deg, #ea580c, #c2410c); }
+        .summary-month-block[data-month="04"] .summary-event-date { color: #ea580c; }
+
+        .summary-month-block[data-month="05"] .summary-month-title { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+        .summary-month-block[data-month="05"] .summary-event-date { color: #7c3aed; }
+
+        .summary-month-block[data-month="06"] .summary-month-title { background: linear-gradient(135deg, #4f46e5, #4338ca); }
+        .summary-month-block[data-month="06"] .summary-event-date { color: #4f46e5; }
+
+        .summary-month-block[data-month="07"] .summary-month-title { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+        .summary-month-block[data-month="07"] .summary-event-date { color: #dc2626; }
+
+        .summary-month-block[data-month="08"] .summary-month-title { background: linear-gradient(135deg, #854d0e, #713f12); }
+        .summary-month-block[data-month="08"] .summary-event-date { color: #854d0e; }
+
+        .summary-month-block[data-month="09"] .summary-month-title { background: linear-gradient(135deg, #db2777, #be185d); }
+        .summary-month-block[data-month="09"] .summary-event-date { color: #db2777; }
+
+        .summary-month-block[data-month="10"] .summary-month-title { background: linear-gradient(135deg, #16a34a, #15803d); }
+        .summary-month-block[data-month="10"] .summary-event-date { color: #16a34a; }
+
+        .summary-month-block[data-month="11"] .summary-month-title { background: linear-gradient(135deg, #ca8a04, #a16207); }
+        .summary-month-block[data-month="11"] .summary-event-date { color: #ca8a04; }
+
+        .summary-month-block[data-month="12"] .summary-month-title { background: linear-gradient(135deg, #9333ea, #7e22ce); }
+        .summary-month-block[data-month="12"] .summary-event-date { color: #9333ea; }
 
         .summary-events-list {
             list-style: none;
@@ -1051,8 +1089,12 @@
             }
 
             body.printing-summary .summary-month-title {
-                background: #fef08a !important;
-                color: #854d0e !important;
+                color: #ffffff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            body.printing-summary .summary-event-date {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
@@ -1249,6 +1291,7 @@
                         footerTotal.textContent = `${eventos.length} Atividades Estratégicas Planejadas para 2027`;
                     }
                     renderCalendar(eventos);
+                    renderPrintSummary(eventos);
                 } catch (err) {
                     console.error('Erro ao carregar events.json:', err);
                     container.innerHTML = `
@@ -1405,9 +1448,11 @@
                     const mEvents = byMonth[m];
                     if (!mEvents || mEvents.length === 0) continue;
 
+                    const monthNumPadded = String(m).padStart(2, '0');
                     const mName = (MONTH_NAMES[m] || `Mês ${m}`).toUpperCase();
                     const block = document.createElement('div');
                     block.className = 'summary-month-block';
+                    block.setAttribute('data-month', monthNumPadded);
 
                     const titleEl = document.createElement('div');
                     titleEl.className = 'summary-month-title';
@@ -1431,9 +1476,12 @@
                             dayDisplay = rawDate.split(' ')[0] || rawDate;
                         }
 
-                        // Extrair horário se existir (ex: "9h", "10h30", "14h")
-                        let timeMatch = (ev.data + ' ' + ev.titulo + ' ' + (ev.descricao||'')).match(/\b(\d{1,2}h(?:\d{2}min|\d{2})?)\b/i);
-                        let timeHtml = timeMatch ? `<span class="summary-event-time">⏰ ${timeMatch[1]}</span>` : '';
+                        // Extrair horário se existir (ex: "9h", "10h30", "14h", "10:30")
+                        let timeMatch = (ev.data + ' ' + (ev.titulo || '')).match(/\b(\d{1,2}(?:h\d{2}(?:min)?|h|\:\d{2}))\b/i);
+                        let timeHtml = '';
+                        if (timeMatch && !ev.titulo.includes(timeMatch[1])) {
+                            timeHtml = `<span class="summary-event-time">⏰ ${timeMatch[1]}</span>`;
+                        }
 
                         li.innerHTML = `
                             <span class="summary-event-date">${escapeHtml(dayDisplay)}</span>
@@ -1469,13 +1517,6 @@
             window.addEventListener('afterprint', () => {
                 document.body.classList.remove('printing-summary');
             });
-
-            // Conectar render do resumo ao loadEvents
-            const origRender = renderCalendar;
-            renderCalendar = function(eventos) {
-                origRender(eventos);
-                renderPrintSummary(eventos);
-            };
 
             loadEvents();
         });
