@@ -17,7 +17,7 @@
 ## 2. Arquitetura e Pilha Tecnológica (Stack)
 
 O projeto é estritamente **Serverless / Jamstack estático**:
-- **HTML5 semântico** e **Vanilla CSS** (sem frameworks pesados como Tailwind, Bootstrap ou React).
+- **HTML5 semântico** e **Vanilla CSS** (sem dependências pesadas como Tailwind, Bootstrap ou React).
 - **Vanilla JavaScript (ES6+)**:
   - Sem etapa de *build* (`npm`, `webpack` ou `vite` não são necessários).
   - Execução direta no navegador do cliente.
@@ -36,7 +36,7 @@ calendario-2027-arae/
 ├── README.md           # Resumo básico do repositório
 ├── PROJETO_GUIA_IA.md  # Este manual detalhado de instruções para IAs e desenvolvedores
 ├── events.json         # Base de dados JSON de todas as atividades de 2027
-├── index.html          # Aplicação principal (Portal público do calendário)
+├── index.html          # Aplicação principal (Portal público do calendário e resumo de impressão)
 ├── admin.html          # Painel administrativo com autenticação PAT e CRUD de eventos
 └── imagens/            # Pasta onde são salvos os banners e fotos dos eventos
 ```
@@ -111,16 +111,33 @@ function b64EncodeUtf8(str) {
 }
 ```
 
-### B. Apresentação Visual dos Cards e Modal ([index.html](file:///c:/Projetos/Calend%C3%A1rio%20ARAE/index.html))
-1. **Cards Fechados (Visão Geral):**
-   - **NÃO** exibir campos de "Competência" nem "Diretrizes" nos cards da listagem principal (decisão de design do usuário para manter visual limpo).
-   - Imagens no card usam `.card-image-wrap img` com `object-fit: contain; max-width: 100%; max-height: 100%;` e fundo neutro (`#f8fafc`). **Nunca use `object-fit: cover`** para evitar corte de textos e fotos de divulgação.
-2. **Modal Expandido (Ao Clicar no Card):**
-   - O modal possui altura máxima de `90vh`, cabeçalho fixo no topo e rolagem vertical suave no corpo (`.modal-body { overflow-y: auto; }`).
-   - Ao abrir o modal, resetar a posição de rolagem com `modalBody.scrollTop = 0`.
-   - **Exibir todos os detalhes:** Imagem ampliada, Tipo, Título, Descrição, **Competência** e **Diretrizes FEB**.
+### B. Apresentação Visual e Layout ([index.html](file:///c:/Projetos/Calend%C3%A1rio%20ARAE/index.html))
+1. **Estrutura da Página Principal:**
+   - **Cabeçalho:** Título e identificação do 7º CEU / ARAE.
+   - **Legenda de Categorias:** Identificação das 4 categorias por cores.
+   - **Módulos Mensais:** Linhas agrupadas por mês (Janeiro a Dezembro) com grid de cards.
+   - **Resumo Anual Condensado (Impressão / PDF):** Posicionado após Dezembro e antes do Resumo por Competência.
+   - **Atividades por Área Responsável (Timeline):** Resumo agrupado por competência.
+   - **Rodapé:** Identificação e link discreto `🔒 Área Administrativa` para `admin.html`.
+   *(Nota: O bloco antigo de introdução e os "Princípios Orientadores" foram removidos a pedido do usuário).*
 
-### C. Segurança do Token
+2. **Cards Fechados (Visão Geral):**
+   - **NÃO** exibir campos de "Competência" nem "Diretrizes" nos cards da listagem geral (decisão deliberada para manter os cards limpos e objetivos).
+   - Imagens no card usam `.card-image-wrap img` com `object-fit: contain; max-width: 100%; max-height: 100%;` e fundo neutro (`#f8fafc`). **Nunca use `object-fit: cover`** para evitar corte de textos e fotos de divulgação.
+
+3. **Modal Expandido (Ao Clicar no Card):**
+   - O modal possui altura máxima de `90vh`, cabeçalho fixo no topo e rolagem vertical suave no corpo (`.modal-body { overflow-y: auto; }`).
+   - Ao abrir o modal, a rolagem deve ser resetada para o topo com `modalBody.scrollTop = 0`.
+   - **Exibe todas as informações completas:** Imagem ampliada, Tipo, Título, Descrição, **Competência** e **Diretrizes FEB**.
+
+### C. Seção de Resumo para Impressão e PDF
+- Localizada em `#printSummarySection` (entre o mês de Dezembro e o resumo por competências).
+- Estruturada em 2 colunas: Coluna 1 (Jan a Jun) e Coluna 2 (Jul a Dez).
+- Formato condensado: `Mês:` em destaque amarelo estilizado, seguido por linhas `Data — Título do Evento ⏰ Horário`.
+- Botão interativo `🖨️ Imprimir / Salvar em PDF` aciona `window.printSummaryCalendar()`.
+- A classe CSS `printing-summary` oculta temporariamente cabeçalho, legenda, cards grandes e rodapé no `@media print`, isolando apenas a folha de resumo com cores forçadas (`print-color-adjust: exact`).
+
+### D. Segurança do Token
 - O token de acesso pessoal do GitHub (PAT) é mantido em `localStorage.getItem('arae_tok')` no navegador do administrador.
 - O arquivo local `Token.txt` está listado no `.gitignore`. **Nunca remova o `.gitignore` nem comite tokens no código-fonte.**
 
@@ -147,3 +164,4 @@ Caso o usuário solicite novas alterações:
 1. Verifique sempre o estado do repositório remoto com `git fetch origin` e `git status` antes de editar.
 2. Preserve a estrutura do `events.json` e garanta que todas as strings salvas permaneçam em UTF-8 limpo.
 3. Não reinsira dependências externas ou bibliotecas desnecessárias; priorize a simplicidade e a performance da stack nativa atual.
+4. Mantenha este documento atualizado sempre que novas seções estruturais ou regras de negócio forem introduzidas.
