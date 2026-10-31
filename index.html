@@ -619,6 +619,187 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
+        /* Printable Summary Section */
+        .print-summary-section {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 2.2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+        }
+
+        .summary-header-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 2px solid #edf2f7;
+        }
+
+        .summary-title-box h2 {
+            font-size: 1.6rem;
+            color: #1a4d6d;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .summary-title-box p {
+            font-size: 0.95rem;
+            color: #64748b;
+        }
+
+        .btn-pdf-print {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: linear-content;
+            background: linear-gradient(135deg, #1a4d6d, #2563eb);
+            color: #ffffff;
+            border: none;
+            padding: 0.8rem 1.6rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+            transition: all 0.25s ease;
+        }
+
+        .btn-pdf-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+            background: linear-gradient(135deg, #163e58, #1d4ed8);
+        }
+
+        .summary-sheet {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 2rem;
+        }
+
+        .sheet-print-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 2px solid #1a4d6d;
+        }
+
+        .sheet-print-header h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .sheet-print-header p {
+            font-size: 0.95rem;
+            color: #475569;
+            margin-top: 0.2rem;
+            font-weight: 500;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.2rem;
+        }
+
+        .summary-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .summary-month-block {
+            break-inside: avoid;
+        }
+
+        .summary-month-title {
+            display: inline-block;
+            background: #fef08a; /* Amarelo clássico com alto contraste e legibilidade */
+            color: #854d0e;
+            font-weight: 800;
+            font-size: 1.05rem;
+            padding: 0.3rem 0.9rem;
+            border-radius: 6px;
+            margin-bottom: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-left: 4px solid #ca8a04;
+        }
+
+        .summary-events-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .summary-event-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.7rem;
+            font-size: 0.92rem;
+            line-height: 1.45;
+            color: #1e293b;
+            padding: 0.35rem 0.5rem;
+            border-radius: 6px;
+            transition: background 0.15s ease;
+        }
+
+        .summary-event-item:hover {
+            background: #f8fafc;
+        }
+
+        .summary-event-date {
+            font-weight: 700;
+            color: #1a4d6d;
+            white-space: nowrap;
+            min-width: 65px;
+        }
+
+        .summary-event-sep {
+            color: #94a3b8;
+            font-weight: bold;
+        }
+
+        .summary-event-title {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .summary-event-time {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #0369a1;
+            background: #e0f2fe;
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            margin-left: 0.4rem;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 860px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .summary-sheet {
+                padding: 1.2rem;
+            }
+        }
+
         /* Loading & Error States */
         .loading-state, .error-state {
             background: white;
@@ -830,11 +1011,56 @@
 
         @media print {
             body {
-                background: white;
+                background: white !important;
+                color: #000 !important;
+                padding-bottom: 0 !important;
             }
+
+            /* Esconde elementos de navegação no modo de impressão do resumo */
+            body.printing-summary .header,
+            body.printing-summary .legend,
+            body.printing-summary .months-container,
+            body.printing-summary .timeline,
+            body.printing-summary .footer,
+            body.printing-summary .summary-header-wrap,
+            body.printing-summary .modal-overlay {
+                display: none !important;
+            }
+
+            body.printing-summary .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            body.printing-summary .print-summary-section {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            body.printing-summary .summary-sheet {
+                border: none !important;
+                padding: 0 !important;
+            }
+
+            body.printing-summary .summary-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 2rem !important;
+            }
+
+            body.printing-summary .summary-month-title {
+                background: #fef08a !important;
+                color: #854d0e !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
             .month-card {
                 page-break-inside: avoid;
             }
+
             .modal-overlay {
                 display: none !important;
             }
@@ -876,6 +1102,29 @@
             <div class="loading-state">
                 <div class="loading-spinner"></div>
                 <p>Carregando calendário de atividades 2027...</p>
+            </div>
+        </div>
+
+        <!-- RESUMO DO CALENDÁRIO PARA IMPRESSÃO / PDF -->
+        <div class="print-summary-section" id="printSummarySection">
+            <div class="summary-header-wrap">
+                <div class="summary-title-box">
+                    <h2>📅 Resumo Anual do Calendário</h2>
+                    <p>Visão cronológica condensada por mês com datas, horários e títulos</p>
+                </div>
+                <button type="button" class="btn-pdf-print" id="btnPrintPdf" onclick="printSummaryCalendar()">
+                    🖨️ Imprimir / Salvar em PDF
+                </button>
+            </div>
+
+            <div class="summary-sheet" id="summarySheet">
+                <div class="sheet-print-header">
+                    <h3>Calendário de Atividades do 7º CEU — 2027</h3>
+                    <p>7º Conselho Espírita de Unificação — Duque de Caxias | ARAE</p>
+                </div>
+                <div class="summary-grid" id="summaryGrid">
+                    <!-- Preenchido via JavaScript -->
+                </div>
             </div>
         </div>
 
@@ -1132,6 +1381,101 @@
                     .replace(/"/g, '&quot;')
                     .replace(/'/g, '&#39;');
             }
+
+            // Renderizar Resumo Anual (Formato Impressão / PDF)
+            function renderPrintSummary(eventos) {
+                const grid = document.getElementById('summaryGrid');
+                if (!grid) return;
+
+                const byMonth = {};
+                for (let m = 1; m <= 12; m++) byMonth[m] = [];
+                eventos.forEach(ev => {
+                    const m = Number(ev.mes) || 1;
+                    if (byMonth[m]) byMonth[m].push(ev);
+                });
+
+                // Coluna 1: Jan a Jun (1 a 6) | Coluna 2: Jul a Dez (7 a 12)
+                const col1 = document.createElement('div');
+                col1.className = 'summary-col';
+
+                const col2 = document.createElement('div');
+                col2.className = 'summary-col';
+
+                for (let m = 1; m <= 12; m++) {
+                    const mEvents = byMonth[m];
+                    if (!mEvents || mEvents.length === 0) continue;
+
+                    const mName = (MONTH_NAMES[m] || `Mês ${m}`).toUpperCase();
+                    const block = document.createElement('div');
+                    block.className = 'summary-month-block';
+
+                    const titleEl = document.createElement('div');
+                    titleEl.className = 'summary-month-title';
+                    titleEl.textContent = mName + ':';
+                    block.appendChild(titleEl);
+
+                    const listEl = document.createElement('ul');
+                    listEl.className = 'summary-events-list';
+
+                    mEvents.forEach(ev => {
+                        const li = document.createElement('li');
+                        li.className = 'summary-event-item';
+
+                        // Extrair dia da data (ex: "10 de Janeiro — Parte I" -> "10")
+                        let rawDate = ev.data || '';
+                        let dayDisplay = rawDate;
+                        const matchDay = rawDate.match(/^(\d{1,2}(?:\s*a\s*\d{1,2})?|\d{1,2}-\d{1,2})/i);
+                        if (matchDay) {
+                            dayDisplay = matchDay[1].trim();
+                        } else {
+                            dayDisplay = rawDate.split(' ')[0] || rawDate;
+                        }
+
+                        // Extrair horário se existir (ex: "9h", "10h30", "14h")
+                        let timeMatch = (ev.data + ' ' + ev.titulo + ' ' + (ev.descricao||'')).match(/\b(\d{1,2}h(?:\d{2}min|\d{2})?)\b/i);
+                        let timeHtml = timeMatch ? `<span class="summary-event-time">⏰ ${timeMatch[1]}</span>` : '';
+
+                        li.innerHTML = `
+                            <span class="summary-event-date">${escapeHtml(dayDisplay)}</span>
+                            <span class="summary-event-sep">—</span>
+                            <span class="summary-event-title">${escapeHtml(ev.titulo)}${timeHtml}</span>
+                        `;
+                        listEl.appendChild(li);
+                    });
+
+                    block.appendChild(listEl);
+
+                    if (m <= 6) {
+                        col1.appendChild(block);
+                    } else {
+                        col2.appendChild(block);
+                    }
+                }
+
+                grid.innerHTML = '';
+                grid.appendChild(col1);
+                grid.appendChild(col2);
+            }
+
+            // Função global para impressão / Salvar PDF
+            window.printSummaryCalendar = function() {
+                document.body.classList.add('printing-summary');
+                window.print();
+                setTimeout(() => {
+                    document.body.classList.remove('printing-summary');
+                }, 1000);
+            };
+
+            window.addEventListener('afterprint', () => {
+                document.body.classList.remove('printing-summary');
+            });
+
+            // Conectar render do resumo ao loadEvents
+            const origRender = renderCalendar;
+            renderCalendar = function(eventos) {
+                origRender(eventos);
+                renderPrintSummary(eventos);
+            };
 
             loadEvents();
         });
