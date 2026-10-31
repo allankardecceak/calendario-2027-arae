@@ -133,9 +133,11 @@ function b64EncodeUtf8(str) {
 ### C. Seção de Resumo para Impressão e PDF
 - Localizada em `#printSummarySection` (entre o mês de Dezembro e o resumo por competências).
 - Estruturada em 2 colunas: Coluna 1 (Jan a Jun) e Coluna 2 (Jul a Dez).
-- Formato condensado: `Mês:` em destaque amarelo estilizado, seguido por linhas `Data — Título do Evento ⏰ Horário`.
+- **Cores Específicas por Mês:** Cada título de mês no resumo utiliza o **mesmo gradiente de cor do cabeçalho do card do respectivo mês** (via `.summary-month-block[data-month="XX"] .summary-month-title`), e as datas herdam a cor primária do mês.
+- **Sincronização Dinâmica:** O resumo é gerado e atualizado diretamente a partir de `events.json` dentro da função `loadEvents()` (junto com `renderCalendar()`). Qualquer edição, inclusão ou exclusão de eventos realizada no painel administrativo reflete imediatamente no resumo anual.
+- Formato condensado: `Mês:` em destaque na cor do mês, seguido por linhas `Data — Título do Evento ⏰ Horário`.
 - Botão interativo `🖨️ Imprimir / Salvar em PDF` aciona `window.printSummaryCalendar()`.
-- A classe CSS `printing-summary` oculta temporariamente cabeçalho, legenda, cards grandes e rodapé no `@media print`, isolando apenas a folha de resumo com cores forçadas (`print-color-adjust: exact`).
+- A classe CSS `printing-summary` oculta temporariamente cabeçalho, legenda, cards grandes e rodapé no `@media print`, isolando apenas a folha de resumo com as cores do mês preservadas (`print-color-adjust: exact`).
 
 ### D. Segurança do Token
 - O token de acesso pessoal do GitHub (PAT) é mantido em `localStorage.getItem('arae_tok')` no navegador do administrador.
