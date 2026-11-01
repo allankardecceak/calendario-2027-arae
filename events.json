@@ -8,30 +8,30 @@
   },
   "eventos": [
     {
-      "id": "jan-01",
+      "id": "ev-1793506610621",
       "mes": 1,
       "nomeMes": "Janeiro",
-      "data": "10 de Janeiro — Parte I",
+      "data": "10 de Janeiro - Parte I",
       "tipo": "type-eleicao",
       "tipoLabel": "Reunião do Conselho",
-      "titulo": "UNIFICAÇÃO — Reunião do Conselho",
-      "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
-      "competencia": "UNIFICAÇÃO / ADM",
-      "diretrizes": "6 (Unificação) e 7 (Formação)",
-      "imagem": "https://raw.githubusercontent.com/allankardecceak/calendario-2027-arae/main/imagens/img_1793382287688.jpg"
+      "titulo": "UNIFICAÇÃO - Reunião do Conselho",
+      "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégivas e integração das áreas funcionais.",
+      "competencia": "UNIFICAÇÃO",
+      "diretrizes": "1 (Difusão) e 2 (Universalidade)",
+      "imagem": ""
     },
     {
-      "id": "jan-02",
+      "id": "ev-1793506715579",
       "mes": 1,
       "nomeMes": "Janeiro",
-      "data": "10 de Janeiro — Parte II",
+      "data": "10 de Janeiro - Parte II",
       "tipo": "type-eleicao",
       "tipoLabel": "Planejamento & Adequação",
       "titulo": "UNIFICAÇÃO — Planejamento e Adequação",
       "descricao": "Avaliação dos resultados de 2026 e planejamento detalhado das atividades para 2027. Aprovação do orçamento 2027 por serviço. Apresentação oficial do calendário e dos objetivos estratégicos. Adequação dos coordenadores do 7º CEU ao novo regulamento dos Conselhos Espíritas Unificados.",
-      "competencia": "UNIFICAÇÃO / ADM",
-      "diretrizes": "6 (Unificação) e 7 (Formação)",
-      "imagem": "https://raw.githubusercontent.com/allankardecceak/calendario-2027-arae/main/imagens/img_1793382595023.png"
+      "competencia": "UNIFICAÇÃO",
+      "diretrizes": "1 (Difusão) e 2 (Universalidade)",
+      "imagem": ""
     },
     {
       "id": "fev-01",
