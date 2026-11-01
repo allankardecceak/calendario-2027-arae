@@ -75,14 +75,14 @@
     {
       "id": "mar-02",
       "mes": 3,
-      "nomeMes": "Março",
+      "nomeMes": "Marco",
       "data": "07 de Março — Parte II",
       "tipo": "type-capacitacao",
       "tipoLabel": "Capacitação",
-      "titulo": "Capacitação dos Evangelizadores",
-      "descricao": "Capacitação de evangelizadores das áreas de Infância, Juventude e Família para aprimoramento das práticas educacionais e doutrinária.",
-      "competencia": "Infância, Juventude e Família",
-      "diretrizes": "1 (Difusão) e 10 (Juventude)",
+      "titulo": "1º CAP — Círculo de Aprendizagem Participativa",
+      "descricao": "CAP — Círculo de Aprendizagem Participativa\nUm espaço contínuo de diálogo e construção coletiva para a modernização do Centro Espírita.",
+      "competencia": "Ações Estratégicas",
+      "diretrizes": "1 (Difusão)",
       "imagem": ""
     },
     {
@@ -144,9 +144,9 @@
       "data": "02 de Maio — Parte II",
       "tipo": "type-capacitacao",
       "tipoLabel": "Capacitação",
-      "titulo": "Capacitação da Área de Assistência e Promoção Social (SAPSE)",
-      "descricao": "Formação continuada dos trabalhadores da assistência espírita focando em metodologias de atendimento, ética solidária e práticas de promoção social.",
-      "competencia": "SAPSE",
+      "titulo": "2º CAP — Círculo de Aprendizagem Participativa",
+      "descricao": "Um espaço contínuo de diálogo e construção coletiva para a modernização do Centro Espírita.",
+      "competencia": "Ações Estratégicas",
       "diretrizes": "5 (Sustentabilidade) e 9 (Participação Social)",
       "imagem": ""
     },
