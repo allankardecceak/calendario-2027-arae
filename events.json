@@ -320,19 +320,6 @@
       "imagem": ""
     },
     {
-      "id": "set-03",
-      "mes": 9,
-      "nomeMes": "Setembro",
-      "data": "19 de Setembro",
-      "tipo": "type-capacitacao",
-      "tipoLabel": "Capacitação",
-      "titulo": "Capacitação da Área de Atendimento Espiritual",
-      "descricao": "Formação especializada para trabalhadores do atendimento espiritual com foco em metodologias, ética no atendimento e aprofundamento doutrinário sobre passes e preces.",
-      "competencia": "Atendimento Espiritual",
-      "diretrizes": "1 (Difusão) e 7 (Formação Continuada)",
-      "imagem": ""
-    },
-    {
       "id": "set-04",
       "mes": 9,
       "nomeMes": "Setembro",
