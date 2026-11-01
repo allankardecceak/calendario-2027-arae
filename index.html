@@ -258,6 +258,16 @@
             color: #0f766e;
         }
 
+        .type-cce {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .type-cap {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
         .activity-title {
             font-size: 1.15rem;
             font-weight: 700;
@@ -1137,6 +1147,14 @@
                 <div class="legend-color" style="background: linear-gradient(135deg, #c2410c, #ea580c);"></div>
                 <span>Confraternizações</span>
             </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #16a34a, #15803d);"></div>
+                <span>CCE - Círculo de Cultura Espírita</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #d97706, #b45309);"></div>
+                <span>CAP - Círculo de Aprendizagem Participativa</span>
+            </div>
         </div>
 
         <!-- Atividades Organizadas por Mês (Carregadas dinamicamente via events.json) -->
@@ -1252,7 +1270,9 @@
             'type-eleicao': 'Reunião do Conselho',
             'type-capacitacao': 'Capacitação',
             'type-encontro': 'Encontro',
-            'type-confraternizacao': 'Confraternização'
+            'type-confraternizacao': 'Confraternização',
+            'type-cce': 'CCE - Círculo de Cultura Espírita',
+            'type-cap': 'CAP - Círculo de Aprendizagem Participativa'
         };
 
         document.addEventListener('DOMContentLoaded', () => {

@@ -79,6 +79,8 @@ O arquivo [events.json](file:///c:/Projetos/Calend%C3%A1rio%20ARAE/events.json) 
 - `type-capacitacao`: Estudos, Capacitações & Seminários (Cor Azul Céu/Sky)
 - `type-encontro`: Encontros Regionais & Temáticos (Cor Roxa/Purple)
 - `type-confraternizacao`: Confraternizações (Cor Laranja/Orange)
+- `type-cce`: CCE - Círculo de Cultura Espírita (Cor Verde Esmeralda/Green)
+- `type-cap`: CAP - Círculo de Aprendizagem Participativa (Cor Âmbar/Dourado/Amber)
 
 ---
 
@@ -114,7 +116,7 @@ function b64EncodeUtf8(str) {
 ### B. Apresentação Visual e Layout ([index.html](file:///c:/Projetos/Calend%C3%A1rio%20ARAE/index.html))
 1. **Estrutura da Página Principal:**
    - **Cabeçalho:** Título e identificação do 7º CEU / ARAE.
-   - **Legenda de Categorias:** Identificação das 4 categorias por cores.
+   - **Legenda de Categorias:** Identificação das categorias por cores distintas.
    - **Módulos Mensais:** Linhas agrupadas por mês (Janeiro a Dezembro) com grid de cards.
    - **Resumo Anual Condensado (Impressão / PDF):** Posicionado após Dezembro e antes do Resumo por Competência.
    - **Atividades por Área Responsável (Timeline):** Resumo agrupado por competência.

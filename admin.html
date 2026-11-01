@@ -113,6 +113,8 @@
         .badge-capacitacao { background: rgba(3,105,161,0.2); color: #38bdf8; }
         .badge-encontro { background: rgba(107,33,168,0.2); color: #c084fc; }
         .badge-confraternizacao { background: rgba(194,65,12,0.2); color: #fb923c; }
+        .badge-cce { background: rgba(22,163,74,0.2); color: #4ade80; }
+        .badge-cap { background: rgba(217,119,6,0.2); color: #fbbf24; }
         .has-image { font-size: 0.75rem; color: var(--gold); }
         .actions-cell { display: flex; gap: 0.5rem; justify-content: flex-end; }
         .btn-icon { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; transition: all 0.15s; }
@@ -302,6 +304,8 @@
                     <option value="type-capacitacao">Estudos, Capacitações e Seminários</option>
                     <option value="type-encontro">Encontros Regionais e Temáticos</option>
                     <option value="type-confraternizacao">Confraternizações</option>
+                    <option value="type-cce">CCE - Círculo de Cultura Espírita</option>
+                    <option value="type-cap">CAP - Círculo de Aprendizagem Participativa</option>
                 </select>
             </div>
             <div class="form-group">
@@ -371,7 +375,9 @@ var BADGES = {
     'type-eleicao':'badge-eleicao',
     'type-capacitacao':'badge-capacitacao',
     'type-encontro':'badge-encontro',
-    'type-confraternizacao':'badge-confraternizacao'
+    'type-confraternizacao':'badge-confraternizacao',
+    'type-cce':'badge-cce',
+    'type-cap':'badge-cap'
 };
 
 // AUTO LOGIN
