@@ -4,7 +4,7 @@
     "subtitulo": "7º Conselho Espírita de Unificação — Duque de Caxias",
     "area": "Área de Ações Estratégicas (ARAE)",
     "totalAtividades": 35,
-    "ultimaAtualizacao": "2026-10-31"
+    "ultimaAtualizacao": "2026-11-01"
   },
   "eventos": [
     {
@@ -34,19 +34,6 @@
       "imagem": "https://raw.githubusercontent.com/allankardecceak/calendario-2027-arae/main/imagens/img_1793382595023.png"
     },
     {
-      "id": "ev-1793409528197",
-      "mes": 1,
-      "nomeMes": "Janeiro",
-      "data": "14 de Janeiro",
-      "tipo": "type-eleicao",
-      "tipoLabel": "Teste  de Planejamento",
-      "titulo": "Test",
-      "descricao": "teste",
-      "competencia": "UNIFICAÇÃO",
-      "diretrizes": "3",
-      "imagem": ""
-    },
-    {
       "id": "fev-01",
       "mes": 2,
       "nomeMes": "Fevereiro",
@@ -64,10 +51,10 @@
       "mes": 2,
       "nomeMes": "Fevereiro",
       "data": "14 de Fevereiro — Parte II",
-      "tipo": "type-capacitacao",
-      "tipoLabel": "Roda de Conversa",
-      "titulo": "Roda de Conversa — Estudos Espíritas",
-      "descricao": "Encontro informal de diálogo e reflexão sobre temas espíritas relevantes, promovendo integração e aprofundamento doutrinário em ambiente fraterno.",
+      "tipo": "type-eleicao",
+      "tipoLabel": "Planejamento & Adequação",
+      "titulo": "UNIFICAÇÃO — Planejamento e Adequação",
+      "descricao": "Avaliação dos resultados de 2026 e planejamento detalhado das atividades para 2027. Apresentação oficial do calendário e dos objetivos estratégicos. Adequação dos coordenadores do 7º CEU ao novo regulamento dos Conselhos Espíritas Unificados.",
       "competencia": "Estudos Espíritas",
       "diretrizes": "1 (Difusão) e 3 (Integração)",
       "imagem": ""
