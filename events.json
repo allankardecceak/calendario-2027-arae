@@ -4,7 +4,7 @@
     "subtitulo": "7º Conselho Espírita de Unificação — Duque de Caxias",
     "area": "Área de Ações Estratégicas (ARAE)",
     "totalAtividades": 35,
-    "ultimaAtualizacao": "2026-11-01"
+    "ultimaAtualizacao": "2026-11-03"
   },
   "eventos": [
     {
@@ -421,6 +421,19 @@
       "descricao": "Encontro da família espírita integrando trabalhadores, famílias e simpatizantes, promovendo uma confraternização geral de todo o movimento espírita.",
       "competencia": "Infância, Juventude e Família",
       "diretrizes": "3 (Integração), 6 (Unificação) e 10 (Família)",
+      "imagem": ""
+    },
+    {
+      "id": "ev-1793719899972",
+      "mes": 11,
+      "nomeMes": "Novembro",
+      "data": "01 a 30 de Novembro",
+      "tipo": "type-capacitacao",
+      "tipoLabel": "Palestras",
+      "titulo": "Mês da Mulher Espírita",
+      "descricao": "Palestras realizadas em instituições espíritas em homenagem à mulher espírita.",
+      "competencia": "Estudos Espíritas",
+      "diretrizes": "1 (Difusão) e 3 (Integração)",
       "imagem": ""
     },
     {
