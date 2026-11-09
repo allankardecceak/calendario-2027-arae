@@ -4,7 +4,7 @@
     "subtitulo": "7º Conselho Espírita de Unificação — Duque de Caxias",
     "area": "Área de Ações Estratégicas (ARAE)",
     "totalAtividades": 35,
-    "ultimaAtualizacao": "2026-11-03"
+    "ultimaAtualizacao": "2026-11-09"
   },
   "eventos": [
     {
@@ -209,7 +209,7 @@
       "data": "20 de Junho",
       "tipo": "type-encontro",
       "tipoLabel": "Encontro",
-      "titulo": "1º Workshop",
+      "titulo": "1º Workshop - Adm, Estudos e Família.",
       "descricao": "Reunião de voluntários e colaboradores das instituições espíritas para integração, compartilhamento de experiências e reafirmação da unidade de propósito.",
       "competencia": "ARAE",
       "diretrizes": "1 (Difusão) e 6 (Unificação)",
@@ -333,6 +333,19 @@
       "imagem": ""
     },
     {
+      "id": "ev-1794191306498",
+      "mes": 9,
+      "nomeMes": "Setembro",
+      "data": "19 de Setembro",
+      "tipo": "type-capacitacao",
+      "tipoLabel": "Capacitação",
+      "titulo": "2º WorkShop - Atendimento Espiritual",
+      "descricao": "Evento de capacitação para área de atendimento espiritual na Casa Espírita.\nExpositor convidado: Cesar Braga Said",
+      "competencia": "Estudos Espíritas",
+      "diretrizes": "1 (Difusão) e 7 (Formação Continuada)",
+      "imagem": ""
+    },
+    {
       "id": "out-01",
       "mes": 10,
       "nomeMes": "Outubro",
@@ -404,8 +417,8 @@
       "data": "21 de Novembro",
       "tipo": "type-capacitacao",
       "tipoLabel": "Capacitação",
-      "titulo": "2º Workshop",
-      "descricao": "Seminário temas propostos da mediunidade e Atendimento Espiritual",
+      "titulo": "3º Workshop - Mediunidade",
+      "descricao": "Seminário temas propostos da mediunidade",
       "competencia": "Estudos da Mediunidade",
       "diretrizes": "1 (Difusão) e 7 (Formação Continuada)",
       "imagem": ""
