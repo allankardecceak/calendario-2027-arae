@@ -1121,7 +1121,47 @@
             .month-card .activity-description { display: none; }
         }
 
+        .calendar-view, .month-navigation {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .calendar-view[hidden] { display: none; }
+        .calendar-view button, .month-navigation button, .calendar-day {
+            font: inherit;
+            color: #0f172a;
+            background: #fff;
+            border: 1px solid #64748b;
+            border-radius: 8px;
+            min-height: 44px;
+            padding: 0.35rem;
+        }
+        .calendar-view button[aria-pressed="true"], .calendar-day[aria-pressed="true"] {
+            background: #0f766e;
+            color: #fff;
+        }
+        .month-navigation button:disabled { opacity: 0.5; }
+        .month-navigation h2 { font-size: 1.1rem; }
+        .monthly-calendar { margin-bottom: 1rem; }
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 0.25rem;
+            text-align: center;
+        }
+        .calendar-day { display: grid; place-content: center; line-height: 1.2; }
+        .calendar-day.has-events:not([aria-pressed="true"]) { background: #ccfbf1; font-weight: 700; }
+        .calendar-day small { font-size: 0.7rem; }
+        .calendar-day:focus-visible, .month-navigation button:focus-visible {
+            outline: 3px solid #0369a1;
+            outline-offset: 2px;
+        }
+        #dayHeading { font-size: 1.1rem; margin: 1rem 0 0.35rem; }
+
         @media print {
+            .monthly-calendar { display: none !important; }
             .calendar-tools, .calendar-legend summary { display: none !important; }
             body.printing-summary .calendar-legend { display: none; }
             body {
@@ -1220,6 +1260,10 @@
                     <button id="clearFilters" type="reset" disabled>Limpar filtros</button>
                 </div>
             </form>
+            <div class="calendar-view" role="group" aria-label="Visualização das atividades" id="calendarView" hidden>
+                <button type="button" id="listView" aria-pressed="true">Lista</button>
+                <button type="button" id="monthView" aria-pressed="false">Calendário mensal</button>
+            </div>
         </section>
         <!-- Legenda -->
         <details class="calendar-legend">
@@ -1252,6 +1296,16 @@
         </div>
 
         </details>
+
+        <section class="monthly-calendar" id="monthlyCalendar" aria-labelledby="monthHeading" hidden>
+            <div class="month-navigation">
+                <button type="button" id="previousMonth" aria-label="Mês anterior">←</button>
+                <h2 id="monthHeading" aria-live="polite"></h2>
+                <button type="button" id="nextMonth" aria-label="Próximo mês">→</button>
+            </div>
+            <div class="month-grid" id="monthGrid"></div>
+            <h3 id="dayHeading" aria-live="polite"></h3>
+        </section>
 
         <!-- Atividades Organizadas por Mês (Carregadas dinamicamente via events.json) -->
         <div class="months-container" id="monthsContainer">
@@ -1389,6 +1443,19 @@
             const areaFilter = document.getElementById('eventArea');
             const filterCount = document.getElementById('filterCount');
             const clearFilters = document.getElementById('clearFilters');
+            const listView = document.getElementById('listView');
+            const monthView = document.getElementById('monthView');
+            const monthlyCalendar = document.getElementById('monthlyCalendar');
+            const monthHeading = document.getElementById('monthHeading');
+            const dayHeading = document.getElementById('dayHeading');
+            const monthGrid = document.getElementById('monthGrid');
+            const previousMonth = document.getElementById('previousMonth');
+            const nextMonth = document.getElementById('nextMonth');
+            const calendarYear = 2027;
+            let visibleMonth = 1;
+            let selectedDay = null;
+            let matchingEvents = [];
+            let hasFilters = false;
             let activeCard;
 
             // Função para Fechar Modal
@@ -1454,6 +1521,7 @@
                     .replace(/\p{M}/gu, '').toLocaleLowerCase('pt-BR').trim();
                 const entries = eventos.map(event => ({
                     event,
+                    dates: eventDates(event),
                     area: (event.competencia || '').trim(),
                     text: normalize([
                         event.titulo, event.descricao, event.data, event.tipoLabel,
@@ -1477,8 +1545,11 @@
                     const query = normalize(search.value);
                     const terms = query ? query.split(/\s+/) : [];
                     const filtering = Boolean(query || monthFilter.value || typeFilter.value || areaFilter.value);
-                    const matching = entries.filter(({ event, area, text }) =>
-                        (!monthFilter.value || Number(event.mes) === Number(monthFilter.value)) &&
+                    const month = monthFilter.value && `${calendarYear}-${monthFilter.value.padStart(2, '0')}`;
+                    const matching = entries.filter(({ event, dates, area, text }) =>
+                        (!month || (dates.dataInicio
+                            ? dates.dataInicio.slice(0, 7) <= month && (dates.dataFim || dates.dataInicio).slice(0, 7) >= month
+                            : Number(event.mes) === Number(monthFilter.value))) &&
                         (!typeFilter.value || event.tipo === typeFilter.value) &&
                         (!areaFilter.value || area === areaFilter.value) &&
                         terms.every(term => text.includes(term))
@@ -1487,13 +1558,24 @@
                         ? '1 atividade encontrada'
                         : `${matching.length} atividades encontradas`;
                     clearFilters.disabled = !filtering && !search.value;
-                    renderCalendar(matching.map(entry => entry.event), filtering);
+                    matchingEvents = matching.map(entry => entry.event);
+                    hasFilters = filtering;
+                    renderResults();
                 }
 
+                listView.addEventListener('click', () => setView(false));
+                monthView.addEventListener('click', () => setView(true));
+                previousMonth.addEventListener('click', () => changeMonth(visibleMonth - 1));
+                nextMonth.addEventListener('click', () => changeMonth(visibleMonth + 1));
                 filters.addEventListener('submit', event => event.preventDefault());
                 search.addEventListener('input', applyFilters);
                 filters.addEventListener('change', event => {
-                    if (event.target !== search) applyFilters();
+                    if (event.target === search) return;
+                    if (event.target === monthFilter && monthFilter.value) {
+                        visibleMonth = Number(monthFilter.value);
+                        selectedDay = null;
+                    }
+                    applyFilters();
                 });
                 filters.addEventListener('reset', event => {
                     event.preventDefault();
@@ -1501,15 +1583,102 @@
                     applyFilters();
                     search.focus();
                 });
+                document.getElementById('calendarView').hidden = false;
                 filterFields.disabled = false;
                 applyFilters();
             }
 
-            function renderCalendar(eventos, filtering) {
+            function setView(monthly) {
+                listView.setAttribute('aria-pressed', String(!monthly));
+                monthView.setAttribute('aria-pressed', String(monthly));
+                monthlyCalendar.hidden = !monthly;
+                renderResults();
+            }
+
+            function changeMonth(month) {
+                if (month < 1 || month > 12) return;
+                visibleMonth = month;
+                selectedDay = null;
+                if (monthFilter.value) {
+                    monthFilter.value = String(month);
+                    monthFilter.dispatchEvent(new Event('change', { bubbles: true }));
+                } else {
+                    renderResults();
+                }
+                const navigationButton = month === 1 ? nextMonth : month === 12 ? previousMonth : null;
+                navigationButton?.focus();
+            }
+
+            function renderResults() {
+                if (monthlyCalendar.hidden) {
+                    renderCalendar(matchingEvents, hasFilters);
+                    return;
+                }
+
+                monthHeading.textContent = `${MONTH_NAMES[visibleMonth]} de ${calendarYear}`;
+                previousMonth.disabled = visibleMonth === 1;
+                nextMonth.disabled = visibleMonth === 12;
+                monthGrid.replaceChildren();
+                for (const weekday of ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']) {
+                    const label = document.createElement('span');
+                    label.textContent = weekday;
+                    monthGrid.appendChild(label);
+                }
+                const firstWeekday = new Date(calendarYear, visibleMonth - 1, 1).getDay();
+                for (let i = 0; i < firstWeekday; i++) {
+                    monthGrid.appendChild(document.createElement('span'));
+                }
+
+                const prefix = `${calendarYear}-${String(visibleMonth).padStart(2, '0')}-`;
+                const daysInMonth = new Date(calendarYear, visibleMonth, 0).getDate();
+                const datedEvents = matchingEvents.map(event => ({ event, dates: eventDates(event) }));
+                let dayEvents = [];
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = prefix + String(day).padStart(2, '0');
+                    const events = datedEvents.filter(({ dates }) =>
+                        dates.dataInicio && dates.dataInicio <= date && date <= (dates.dataFim || dates.dataInicio)
+                    ).map(({ event }) => event);
+                    if (day === selectedDay) dayEvents = events;
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'calendar-day';
+                    button.classList.toggle('has-events', events.length > 0);
+                    button.setAttribute('aria-pressed', String(day === selectedDay));
+                    const count = events.length === 1 ? '1 atividade' : `${events.length} atividades`;
+                    button.setAttribute('aria-label', `${day} de ${MONTH_NAMES[visibleMonth]}, ${count}`);
+                    button.textContent = day;
+                    if (events.length) {
+                        const badge = document.createElement('small');
+                        badge.textContent = events.length;
+                        badge.setAttribute('aria-hidden', 'true');
+                        button.appendChild(badge);
+                    }
+                    button.addEventListener('click', () => {
+                        selectedDay = day;
+                        monthGrid.querySelector('[aria-pressed="true"]')?.setAttribute('aria-pressed', 'false');
+                        button.setAttribute('aria-pressed', 'true');
+                        renderDay(events);
+                    });
+                    monthGrid.appendChild(button);
+                }
+                renderDay(dayEvents);
+            }
+
+            function renderDay(events) {
+                if (selectedDay === null) {
+                    dayHeading.textContent = 'Selecione um dia para ver as atividades.';
+                    container.replaceChildren();
+                    return;
+                }
+                dayHeading.textContent = `Atividades em ${selectedDay} de ${MONTH_NAMES[visibleMonth]}`;
+                renderCalendar(events, hasFilters, 'Nenhuma atividade neste dia.');
+            }
+
+            function renderCalendar(eventos, filtering, emptyMessage) {
                 if (!eventos || eventos.length === 0) {
                     container.innerHTML = `
                         <div class="loading-state">
-                            <p>${filtering ? 'Nenhuma atividade corresponde à busca. Ajuste ou limpe os filtros.' : 'Nenhuma atividade cadastrada no momento.'}</p>
+                            <p>${emptyMessage || (filtering ? 'Nenhuma atividade corresponde à busca. Ajuste ou limpe os filtros.' : 'Nenhuma atividade cadastrada no momento.')}</p>
                         </div>
                     `;
                     return;
