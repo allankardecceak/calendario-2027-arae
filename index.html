@@ -1355,6 +1355,7 @@
         </div>
     </div>
 
+    <script src="./event-dates.js"></script>
     <script>
         const MONTH_NAMES = {
             1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril',
@@ -1422,7 +1423,7 @@
                     const response = await fetch('./events.json?v=' + Date.now());
                     if (!response.ok) throw new Error('Não foi possível carregar o arquivo de eventos.');
                     const data = await response.json();
-                    const eventos = data.eventos || [];
+                    const eventos = (data.eventos || []).slice().sort(compareEventDates);
                     if (footerTotal && eventos.length > 0) {
                         footerTotal.textContent = `${eventos.length} Atividades Estratégicas Planejadas para 2027`;
                     }
@@ -1679,15 +1680,7 @@
                         const li = document.createElement('li');
                         li.className = 'summary-event-item';
 
-                        // Extrair dia da data (ex: "10 de Janeiro — Parte I" -> "10")
-                        let rawDate = ev.data || '';
-                        let dayDisplay = rawDate;
-                        const matchDay = rawDate.match(/^(\d{1,2}(?:\s*a\s*\d{1,2})?|\d{1,2}-\d{1,2})/i);
-                        if (matchDay) {
-                            dayDisplay = matchDay[1].trim();
-                        } else {
-                            dayDisplay = rawDate.split(' ')[0] || rawDate;
-                        }
+                        const dayDisplay = summaryEventDate(ev);
 
                         // Extrair horário se existir (ex: "9h", "10h30", "14h", "10:30")
                         let timeMatch = (ev.data + ' ' + (ev.titulo || '')).match(/\b(\d{1,2}(?:h\d{2}(?:min)?|h|\:\d{2}))\b/i);

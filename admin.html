@@ -258,8 +258,9 @@
             <div class="publish-info">
                 <h3>&#128640; Publicar Alterações</h3>
                 <p>Salva o calendário no GitHub. O Vercel publica automaticamente em ~30 segundos.</p>
+                <p id="publishStatus" role="status">Nenhuma alteração pendente.</p>
             </div>
-            <button class="btn btn-gold" id="pubBtn" onclick="publishChanges()">&#11014; Publicar no GitHub</button>
+            <button class="btn btn-gold" id="pubBtn" onclick="publishChanges()" disabled>&#11014; Publicar no GitHub</button>
         </div>
     </div>
 </div>
@@ -275,20 +276,18 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>Mês *</label>
-                <select id="fMes">
-                    <option value="1">Janeiro</option><option value="2">Fevereiro</option>
-                    <option value="3">Março</option><option value="4">Abril</option>
-                    <option value="5">Maio</option><option value="6">Junho</option>
-                    <option value="7">Julho</option><option value="8">Agosto</option>
-                    <option value="9">Setembro</option><option value="10">Outubro</option>
-                    <option value="11">Novembro</option><option value="12">Dezembro</option>
-                </select>
+                <label for="fInicio">Data de início *</label>
+                <input type="date" id="fInicio" min="2027-01-01" max="2027-12-31" required oninput="previewDate()">
             </div>
             <div class="form-group">
-                <label>Data exibida *</label>
-                <input type="text" id="fData" placeholder="Ex: 15 de Março">
+                <label for="fFim">Data de término (opcional)</label>
+                <input type="date" id="fFim" min="2027-01-01" max="2027-12-31" oninput="previewDate()">
             </div>
+        </div>
+        <div class="form-group">
+            <label for="fObservacaoData">Observação da data (opcional)</label>
+            <input type="text" id="fObservacaoData" placeholder="Ex.: Parte II, às 10h30" oninput="previewDate()">
+            <output id="datePreview" for="fInicio fFim fObservacaoData"></output>
         </div>
 
         <div class="form-group" style="margin-top:1rem;">
@@ -357,6 +356,7 @@
 
 <div id="toastBox"></div>
 
+<script src="./event-dates.js"></script>
 <script>
 const OWNER = 'allankardecceak';
 const REPO  = 'calendario-2027-arae';
@@ -368,8 +368,11 @@ var token = '';
 var data = null;
 var sha  = '';
 var pendingFile = null;
+let revision = 0;
+let publishedRevision = 0;
+let publishing = false;
 
-var MESES = ['','Janeiro','Fevereiro','Marco','Abril','Maio','Junho',
+var MESES = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho',
              'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 var BADGES = {
     'type-eleicao':'badge-eleicao',
@@ -422,6 +425,8 @@ async function doLogin() {
         var d = await r.json();
         sha  = d.sha;
         data = JSON.parse(b64DecodeUtf8(d.content));
+        revision = publishedRevision = 0;
+        updatePublishStatus();
         localStorage.setItem('arae_tok', t);
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('adminPanel').style.display  = 'block';
@@ -464,7 +469,7 @@ function updateStats() {
 function renderTable() {
     var search = document.getElementById('fSearch').value.toLowerCase();
     var mes    = document.getElementById('fMesFil').value;
-    var evs    = data.eventos.slice();
+    var evs    = data.eventos.slice().sort(compareEventDates);
     if (mes)    evs = evs.filter(function(e){return String(e.mes)===mes;});
     if (search) evs = evs.filter(function(e){
         return e.titulo.toLowerCase().includes(search) ||
@@ -478,7 +483,7 @@ function renderTable() {
         var bc = BADGES[ev.tipo] || 'badge-capacitacao';
         return '<tr>'+
             '<td class="td-date">'+MESES[ev.mes]+'</td>'+
-            '<td class="td-date">'+ev.data+'</td>'+
+            '<td class="td-date">'+escapeTableText(ev.data)+'</td>'+
             '<td class="td-title">'+ev.titulo+'</td>'+
             '<td><span class="type-badge '+bc+'">'+ev.tipoLabel+'</span></td>'+
             '<td>'+(ev.imagem?'<span class="has-image">&#11088;</span>':'<span style="color:var(--text-muted)">—</span>')+'</td>'+
@@ -489,20 +494,27 @@ function renderTable() {
     }).join('');
 }
 
+function escapeTableText(value) {
+    const element = document.createElement('span');
+    element.textContent = value;
+    return element.innerHTML;
+}
+
 function openModal(idx) {
     if (idx === undefined) idx = -1;
     document.getElementById('editIdx').value = idx;
     clearImg();
     if (idx < 0) {
         document.getElementById('mTitle').textContent = 'Novo Evento';
-        ['fData','fTitulo','fLabel','fDesc','fComp','fDir'].forEach(function(id){document.getElementById(id).value='';});
-        document.getElementById('fMes').value='1';
+        ['fInicio','fFim','fObservacaoData','fTitulo','fLabel','fDesc','fComp','fDir'].forEach(function(id){document.getElementById(id).value='';});
         document.getElementById('fTipo').value='type-eleicao';
     } else {
         var ev = data.eventos[idx];
         document.getElementById('mTitle').textContent = 'Editar Evento';
-        document.getElementById('fMes').value   = ev.mes;
-        document.getElementById('fData').value  = ev.data;
+        const dates = eventDates(ev);
+        document.getElementById('fInicio').value = dates.dataInicio || '';
+        document.getElementById('fFim').value = dates.dataFim || '';
+        document.getElementById('fObservacaoData').value = dates.observacaoData || '';
         document.getElementById('fTitulo').value= ev.titulo;
         document.getElementById('fTipo').value  = ev.tipo;
         document.getElementById('fLabel').value = ev.tipoLabel;
@@ -515,6 +527,7 @@ function openModal(idx) {
             document.getElementById('upArea').style.display  = 'none';
         }
     }
+    previewDate();
     document.getElementById('evModal').classList.add('open');
 }
 
@@ -569,19 +582,42 @@ function uploadImg(file) {
     });
 }
 
+function previewDate() {
+    const start = document.getElementById('fInicio');
+    const end = document.getElementById('fFim');
+    end.min = start.value || start.min;
+    const note = document.getElementById('fObservacaoData').value.trim();
+    const preview = document.getElementById('datePreview');
+    preview.textContent = start.value && start.validity.valid && end.validity.valid
+        ? 'Data exibida: ' + formatEventDate(start.value, end.value, note)
+        : '';
+}
+
 async function saveEvent() {
     var titulo = document.getElementById('fTitulo').value.trim();
-    var dt     = document.getElementById('fData').value.trim();
+    const start = document.getElementById('fInicio');
+    const end = document.getElementById('fFim');
+    const note = document.getElementById('fObservacaoData').value.trim();
     var desc   = document.getElementById('fDesc').value.trim();
-    if (!titulo||!dt||!desc) { toast('err','Preencha os campos obrigatórios (*).'); return; }
+    end.min = start.value || start.min;
+    if (!start.reportValidity() || !end.reportValidity()) return;
+    if (!titulo||!desc) { toast('err','Preencha os campos obrigatórios (*).'); return; }
     var btn = document.getElementById('saveBtn');
     btn.disabled=true; btn.innerHTML='<span class="spin"></span> Salvando...';
     try {
         var idx = parseInt(document.getElementById('editIdx').value);
-        var mes = parseInt(document.getElementById('fMes').value);
+        const dataInicio = start.value;
+        const dataFim = end.value;
+        const mes = Number(dataInicio.slice(5, 7));
+        const previous = data.eventos[idx];
+        const previousDates = previous && eventDates(previous);
+        const sameDates = previousDates && dataInicio === previousDates.dataInicio &&
+            dataFim === (previousDates.dataFim || '') && note === (previousDates.observacaoData || '');
+        const dt = sameDates ? previous.data : formatEventDate(dataInicio, dataFim, note);
         var img = idx>=0 ? (data.eventos[idx].imagem||'') : '';
         if (pendingFile) { toast('inf','Enviando imagem...'); img = await uploadImg(pendingFile); }
         var ev = {
+            ...previous,
             id: idx>=0 ? data.eventos[idx].id : 'ev-'+Date.now(),
             mes:mes, nomeMes:MESES[mes], data:dt,
             tipo:document.getElementById('fTipo').value,
@@ -591,9 +627,15 @@ async function saveEvent() {
             diretrizes:document.getElementById('fDir').value.trim(),
             imagem:img
         };
+        ev.dataInicio = dataInicio;
+        if (dataFim) ev.dataFim = dataFim;
+        else delete ev.dataFim;
+        if (note) ev.observacaoData = note;
+        else delete ev.observacaoData;
         if (idx>=0) { data.eventos[idx]=ev; }
-        else { data.eventos.push(ev); data.eventos.sort(function(a,b){return a.mes-b.mes;}); }
-        data.meta.ultimaAtualizacao = new Date().toISOString().split('T')[0];
+        else data.eventos.push(ev);
+        data.eventos.sort(compareEventDates);
+        markEventsChanged();
         closeModal(); updateStats(); renderTable();
         toast('ok','Evento "'+titulo+'" salvo! Clique em Publicar para enviar ao GitHub.');
     } catch(e) { toast('err',e.message); }
@@ -603,27 +645,50 @@ async function saveEvent() {
 function delEvent(idx) {
     if (!confirm('Excluir o evento:\n"'+data.eventos[idx].titulo+'"?')) return;
     data.eventos.splice(idx,1);
+    markEventsChanged();
     updateStats(); renderTable();
     toast('ok','Evento removido. Publique para aplicar.');
 }
 
+function markEventsChanged() {
+    data.meta.totalAtividades = data.eventos.length;
+    data.meta.ultimaAtualizacao = new Date().toISOString().split('T')[0];
+    revision++;
+    updatePublishStatus();
+}
+
+function updatePublishStatus() {
+    const pending = revision !== publishedRevision;
+    document.getElementById('publishStatus').textContent = publishing
+        ? 'Publicando alterações…'
+        : pending ? 'Há alterações pendentes.' : 'Nenhuma alteração pendente.';
+    document.getElementById('pubBtn').disabled = publishing || !pending;
+}
+
 async function publishChanges() {
+    if (publishing || revision === publishedRevision) return;
+    const sentRevision = revision;
+    publishing = true;
+    updatePublishStatus();
     var btn = document.getElementById('pubBtn');
     btn.disabled=true; btn.innerHTML='<span class="spin"></span> Publicando...';
     try {
-        var r = await gh('contents/'+EFILE);
-        if (!r.ok) throw new Error('Não foi possível buscar o arquivo.');
-        sha = (await r.json()).sha;
         var content = b64EncodeUtf8(JSON.stringify(data, null, 2));
         var res = await gh('contents/'+EFILE,'PUT',{
             message:'Admin: atualiza eventos - '+new Date().toLocaleString('pt-BR'),
             content:content, sha:sha, branch:BRANCH
         });
+        if (res.status === 409) {
+            throw new Error('O arquivo mudou no GitHub desde a abertura do painel. Revise as alterações antes de tentar publicar novamente.');
+        }
         if (!res.ok) { var e=await res.json(); throw new Error(e.message||'Erro ao publicar.'); }
         sha = (await res.json()).content.sha;
+        publishedRevision = sentRevision;
         toast('ok','Publicado! O site será atualizado em ~30 segundos.');
     } catch(e) { toast('err',e.message); }
-    btn.disabled=false; btn.innerHTML='&#11014; Publicar no GitHub';
+    publishing = false;
+    updatePublishStatus();
+    btn.innerHTML='&#11014; Publicar no GitHub';
 }
 
 function toast(type, msg) {

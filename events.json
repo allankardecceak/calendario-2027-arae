@@ -18,7 +18,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégivas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO",
       "diretrizes": "1 (Difusão) e 2 (Universalidade)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-01-10",
+      "observacaoData": "Parte I"
     },
     {
       "id": "ev-1793506715579",
@@ -31,7 +33,9 @@
       "descricao": "Avaliação dos resultados de 2026 e planejamento detalhado das atividades para 2027. Aprovação do orçamento 2027 por serviço. Apresentação oficial do calendário e dos objetivos estratégicos. Adequação dos coordenadores do 7º CEU ao novo regulamento dos Conselhos Espíritas Unificados.",
       "competencia": "UNIFICAÇÃO",
       "diretrizes": "1 (Difusão) e 2 (Universalidade)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-01-10",
+      "observacaoData": "Parte II"
     },
     {
       "id": "fev-01",
@@ -44,7 +48,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-02-14",
+      "observacaoData": "Parte I"
     },
     {
       "id": "fev-02",
@@ -57,7 +63,9 @@
       "descricao": "Avaliação dos resultados de 2026 e planejamento detalhado das atividades para 2027. Apresentação oficial do calendário e dos objetivos estratégicos. Adequação dos coordenadores do 7º CEU ao novo regulamento dos Conselhos Espíritas Unificados.",
       "competencia": "Estudos Espíritas",
       "diretrizes": "1 (Difusão) e 3 (Integração)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-02-14",
+      "observacaoData": "Parte II"
     },
     {
       "id": "mar-01",
@@ -70,7 +78,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-03-07",
+      "observacaoData": "Parte I"
     },
     {
       "id": "mar-02",
@@ -83,7 +93,9 @@
       "descricao": "CAP — Círculo de Aprendizagem Participativa\nUm espaço contínuo de diálogo e construção coletiva para a modernização do Centro Espírita.",
       "competencia": "Ações Estratégicas",
       "diretrizes": "1 (Difusão)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-03-07",
+      "observacaoData": "Parte II"
     },
     {
       "id": "abr-01",
@@ -96,7 +108,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-04-04",
+      "observacaoData": "Parte I"
     },
     {
       "id": "abr-02",
@@ -109,7 +123,9 @@
       "descricao": "Primeiro encontro do grupo de estudos espíritas, focado no aprofundamento doutrinário e discussão de temas relevantes para o movimento.",
       "competencia": "Estudos Espíritas",
       "diretrizes": "1 (Difusão) e 2 (Universalidade)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-04-04",
+      "observacaoData": "Parte II"
     },
     {
       "id": "abr-03",
@@ -122,7 +138,9 @@
       "descricao": "Celebração especial dos 170 anos da obra de Allan Kardec com palestras, seminários e estudos aprofundados sobre a codificação espírita. Atividades de 11 a 18 de abril.",
       "competencia": "Estudos Espíritas",
       "diretrizes": "1 (Difusão) e 8 (Livro Espírita)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-04-12",
+      "dataFim": "2027-04-18"
     },
     {
       "id": "mai-01",
@@ -135,7 +153,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-05-02",
+      "observacaoData": "Parte I"
     },
     {
       "id": "mai-02",
@@ -148,7 +168,9 @@
       "descricao": "Um espaço contínuo de diálogo e construção coletiva para a modernização do Centro Espírita.",
       "competencia": "Ações Estratégicas",
       "diretrizes": "5 (Sustentabilidade) e 9 (Participação Social)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-05-02",
+      "observacaoData": "Parte II"
     },
     {
       "id": "mai-03",
@@ -161,7 +183,8 @@
       "descricao": "Passeio cultural a um local histórico, proporcionando integração, vivência fraterna e enriquecimento cultural aos trabalhadores e participantes do movimento espírita.",
       "competencia": "Cultura e Integração",
       "diretrizes": "2 (Universalidade) e 3 (Integração)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-05-16"
     },
     {
       "id": "mai-04",
@@ -174,7 +197,8 @@
       "descricao": "Encontro da infância reunindo evangelizandos de várias evangelizações das Instituições Espíritas para um dia festivo de aprendizado do evangelho e doutrina espírita.",
       "competencia": "Infância, Juventude e Família",
       "diretrizes": "3 (Integração) e 10 (Juventude)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-05-23"
     },
     {
       "id": "jun-01",
@@ -187,7 +211,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-06-06",
+      "observacaoData": "Parte I"
     },
     {
       "id": "jun-02",
@@ -200,7 +226,9 @@
       "descricao": "Continuação do grupo de estudos temáticos focado em aprofundamento doutrinário e formação filosófica alinhada aos princípios espíritas.",
       "competencia": "Estudos Espíritas",
       "diretrizes": "1 (Difusão) e 2 (Universalidade)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-06-06",
+      "observacaoData": "Parte II"
     },
     {
       "id": "jun-03",
@@ -213,7 +241,8 @@
       "descricao": "Reunião de voluntários e colaboradores das instituições espíritas para integração, compartilhamento de experiências e reafirmação da unidade de propósito.",
       "competencia": "ARAE",
       "diretrizes": "1 (Difusão) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-06-20"
     },
     {
       "id": "jul-01",
@@ -226,7 +255,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-07-04",
+      "observacaoData": "Parte I"
     },
     {
       "id": "jul-02",
@@ -239,7 +270,9 @@
       "descricao": "Um espaço contínuo de diálogo e construção coletiva para a modernização do Centro Espírita.",
       "competencia": "ARAE",
       "diretrizes": "1 (Difusão)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-07-04",
+      "observacaoData": "Parte II"
     },
     {
       "id": "jul-03",
@@ -252,7 +285,8 @@
       "descricao": "Encontro Regional Espírita de Unificação promovido pela FERJ (Federação Espírita do Estado do Rio de Janeiro) para integração e fortalecimento do movimento espírita regional.",
       "competencia": "REUNIR IV",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-07-18"
     },
     {
       "id": "ago-01",
@@ -265,7 +299,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-08-01",
+      "observacaoData": "Parte I"
     },
     {
       "id": "ago-02",
@@ -278,7 +314,9 @@
       "descricao": "Terceira etapa dos círculos de cultura espírita continuando o aprofundamento doutrinário e formação intelectual-moral dos participantes.",
       "competencia": "Estudos Espíritas",
       "diretrizes": "1 (Difusão) e 2 (Universalidade)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-08-01",
+      "observacaoData": "Parte II"
     },
     {
       "id": "ago-03",
@@ -291,7 +329,8 @@
       "descricao": "Preparatório para o ENEFE com o objetivo de incentivar as Instituições Espíritas a serem novos núcleos de atividades durante o período do carnaval.",
       "competencia": "Infância, Juventude e Família",
       "diretrizes": "3 (Integração) e 10 (Família)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-08-22"
     },
     {
       "id": "set-01",
@@ -304,7 +343,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-09-05",
+      "observacaoData": "Parte I"
     },
     {
       "id": "set-02",
@@ -317,7 +358,9 @@
       "descricao": "Um espaço contínuo de diálogo e construção coletiva para a modernização do Centro Espírita.",
       "competencia": "ARAE",
       "diretrizes": "3 (Integração)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-09-05",
+      "observacaoData": "Parte II"
     },
     {
       "id": "set-04",
@@ -330,7 +373,8 @@
       "descricao": "Reunião dos participantes de mocidades das instituições espíritas.",
       "competencia": "Infância, Juventude e Família",
       "diretrizes": "1 (Difusão) e Juventude",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-09-26"
     },
     {
       "id": "ev-1794191306498",
@@ -343,7 +387,8 @@
       "descricao": "Evento de capacitação para área de atendimento espiritual na Casa Espírita.\nExpositor convidado: Cesar Braga Said",
       "competencia": "Estudos Espíritas",
       "diretrizes": "1 (Difusão) e 7 (Formação Continuada)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-09-19"
     },
     {
       "id": "out-01",
@@ -356,7 +401,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-10-03",
+      "observacaoData": "Parte I"
     },
     {
       "id": "out-02",
@@ -369,7 +416,9 @@
       "descricao": "Quarta e última etapa dos círculos de cultura espírita do ano, consolidando o aprofundamento doutrinário e avaliando o percurso formativo dos participantes.",
       "competencia": "Estudos Espíritas",
       "diretrizes": "1 (Difusão) e 2 (Universalidade)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-10-03",
+      "observacaoData": "Parte II"
     },
     {
       "id": "out-03",
@@ -382,7 +431,8 @@
       "descricao": "Evento integrado apresentando trabalhos artísticos de centros espíritas com simpósio temático. Promove a difusão da doutrina através da manifestação cultural e artística.",
       "competencia": "Arte",
       "diretrizes": "1 (Difusão) e 3 (Integração)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-10-17"
     },
     {
       "id": "nov-01",
@@ -395,7 +445,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-11-07",
+      "observacaoData": "Parte I"
     },
     {
       "id": "nov-02",
@@ -408,7 +460,9 @@
       "descricao": "Roda de conversa com os líderes das instituições espíritas de Duque de Caxias para discussão de estratégias, integração do movimento e fortalecimento de laços.",
       "competencia": "ARAE / UNIFICAÇÃO",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-11-07",
+      "observacaoData": "Parte II"
     },
     {
       "id": "nov-03",
@@ -421,7 +475,8 @@
       "descricao": "Seminário temas propostos da mediunidade",
       "competencia": "Estudos da Mediunidade",
       "diretrizes": "1 (Difusão) e 7 (Formação Continuada)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-11-21"
     },
     {
       "id": "nov-04",
@@ -434,7 +489,8 @@
       "descricao": "Encontro da família espírita integrando trabalhadores, famílias e simpatizantes, promovendo uma confraternização geral de todo o movimento espírita.",
       "competencia": "Infância, Juventude e Família",
       "diretrizes": "3 (Integração), 6 (Unificação) e 10 (Família)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-11-28"
     },
     {
       "id": "ev-1793719899972",
@@ -447,7 +503,9 @@
       "descricao": "Palestras realizadas em instituições espíritas em homenagem à mulher espírita.",
       "competencia": "Estudos Espíritas",
       "diretrizes": "1 (Difusão) e 3 (Integração)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-11-01",
+      "dataFim": "2027-11-30"
     },
     {
       "id": "dez-01",
@@ -460,7 +518,9 @@
       "descricao": "Reunião ordinária do 7º CEU para acompanhamento das atividades, discussão de demandas estratégicas e integração das áreas funcionais.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "3 (Integração) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-12-05",
+      "observacaoData": "Parte I"
     },
     {
       "id": "dez-02",
@@ -473,7 +533,9 @@
       "descricao": "Celebração de encerramento do ano reunindo trabalhadores e lideranças para agradecimento pelo trabalho realizado, confraternização fraterna e reafirmação de compromissos.",
       "competencia": "UNIFICAÇÃO / ADM",
       "diretrizes": "4 (Adequação) e 6 (Unificação)",
-      "imagem": ""
+      "imagem": "",
+      "dataInicio": "2027-12-05",
+      "observacaoData": "Parte II"
     }
   ]
 }
