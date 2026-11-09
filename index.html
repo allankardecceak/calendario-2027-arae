@@ -1057,7 +1057,73 @@
             }
         }
 
+        .calendar-tools {
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            padding: clamp(1rem, 3vw, 1.5rem);
+            margin-bottom: 1.25rem;
+            color: #0f172a;
+        }
+        .calendar-tools-header, .filter-status {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+        .calendar-tools-header h2 { font-size: 1.25rem; }
+        .filter-fields {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem;
+            margin: 0.75rem 0;
+            border: 0;
+            padding: 0;
+            min-width: 0;
+        }
+        .filter-search { grid-column: 1 / -1; }
+        .filter-fields label { display: block; font-weight: 600; min-width: 0; }
+        .filter-fields input, .filter-fields select, .filter-status button, .calendar-jump {
+            min-height: 44px;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #64748b;
+            border-radius: 8px;
+            font: inherit;
+            color: inherit;
+            background: #fff;
+        }
+        .filter-fields input, .filter-fields select { display: block; width: 100%; margin-top: 0.25rem; }
+        .calendar-jump {
+            display: inline-flex;
+            align-items: center;
+            background: #0f766e;
+            border-color: #0f766e;
+            color: #fff;
+            font-weight: 600;
+        }
+        .filter-status button:disabled { opacity: 0.6; }
+        .calendar-tools :focus-visible, .month-card:focus-visible {
+            outline: 3px solid #0369a1;
+            outline-offset: 3px;
+        }
+        .calendar-legend { margin-bottom: 1.25rem; }
+        .calendar-legend summary { cursor: pointer; padding: 0.65rem 0; font-weight: 600; }
+        .calendar-legend .legend { margin-bottom: 0; }
+        .card-competence { margin-top: 0.65rem; font-size: 0.875rem; color: #334155; overflow-wrap: anywhere; }
+        #printSummarySection { scroll-margin-top: 1rem; }
+
+        @media (max-width: 768px) {
+            .header { padding: 1.4rem 1rem; }
+            .filter-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .filter-area { grid-column: 1 / -1; }
+            .month-row { padding: 0.9rem 0.75rem; }
+            .month-card .activity-description { display: none; }
+        }
+
         @media print {
+            .calendar-tools, .calendar-legend summary { display: none !important; }
+            body.printing-summary .calendar-legend { display: none; }
             body {
                 background: white !important;
                 color: #000 !important;
@@ -1129,7 +1195,35 @@
     </div>
 
     <div class="container">
+        <section class="calendar-tools" aria-labelledby="calendarToolsTitle">
+            <div class="calendar-tools-header">
+                <h2 id="calendarToolsTitle">Encontre uma atividade</h2>
+                <a class="calendar-jump" href="#printSummarySection">Ver resumo anual</a>
+            </div>
+            <form id="calendarFilters" role="search" aria-label="Buscar atividades">
+                <fieldset class="filter-fields" id="filterFields" aria-label="Filtros do calendário" disabled>
+                    <label class="filter-search">Busca
+                        <input id="eventSearch" type="search" placeholder="Ex.: reunião, estudo ou seminário">
+                    </label>
+                    <label>Mês
+                        <select id="eventMonth"><option value="">Todos os meses</option></select>
+                    </label>
+                    <label>Tipo
+                        <select id="eventType"><option value="">Todos os tipos</option></select>
+                    </label>
+                    <label class="filter-area">Área responsável
+                        <select id="eventArea"><option value="">Todas as áreas</option></select>
+                    </label>
+                </fieldset>
+                <div class="filter-status">
+                    <span id="filterCount" role="status"></span>
+                    <button id="clearFilters" type="reset" disabled>Limpar filtros</button>
+                </div>
+            </form>
+        </section>
         <!-- Legenda -->
+        <details class="calendar-legend">
+        <summary>Legenda de categorias</summary>
         <div class="legend">
             <div class="legend-item">
                 <div class="legend-color" style="background: linear-gradient(135deg, #0f766e, #0d9488);"></div>
@@ -1157,6 +1251,8 @@
             </div>
         </div>
 
+        </details>
+
         <!-- Atividades Organizadas por Mês (Carregadas dinamicamente via events.json) -->
         <div class="months-container" id="monthsContainer">
             <div class="loading-state">
@@ -1166,7 +1262,7 @@
         </div>
 
         <!-- RESUMO DO CALENDÁRIO PARA IMPRESSÃO / PDF -->
-        <div class="print-summary-section" id="printSummarySection">
+        <div class="print-summary-section" id="printSummarySection" tabindex="-1">
             <div class="summary-header-wrap">
                 <div class="summary-title-box">
                     <h2>📅 Resumo Anual do Calendário</h2>
@@ -1284,12 +1380,22 @@
             const modalDate = document.getElementById('modalDate');
             const modalBody = document.getElementById('modalBody');
             const footerTotal = document.getElementById('footerTotalAtividades');
+            const filters = document.getElementById('calendarFilters');
+            const filterFields = document.getElementById('filterFields');
+            const search = document.getElementById('eventSearch');
+            const monthFilter = document.getElementById('eventMonth');
+            const typeFilter = document.getElementById('eventType');
+            const areaFilter = document.getElementById('eventArea');
+            const filterCount = document.getElementById('filterCount');
+            const clearFilters = document.getElementById('clearFilters');
+            let activeCard;
 
             // Função para Fechar Modal
             const closeModal = () => {
                 modal.classList.remove('active');
                 modal.setAttribute('aria-hidden', 'true');
                 document.body.style.overflow = '';
+                activeCard?.focus();
             };
 
             modalCloseBtn.addEventListener('click', closeModal);
@@ -1302,6 +1408,16 @@
 
             // Carregar Eventos do events.json
             async function loadEvents() {
+                if (window.location.protocol === 'file:') {
+                    container.innerHTML = `
+                        <div class="error-state">
+                            <p><strong>Abra o calendário pelo servidor local para carregar as atividades.</strong></p>
+                            <p>Na pasta do projeto, execute <code>python -m http.server 8000 --bind 127.0.0.1</code>.</p>
+                            <p><a href="http://127.0.0.1:8000/index.html">Abrir calendário local</a></p>
+                        </div>
+                    `;
+                    return;
+                }
                 try {
                     const response = await fetch('./events.json?v=' + Date.now());
                     if (!response.ok) throw new Error('Não foi possível carregar o arquivo de eventos.');
@@ -1310,25 +1426,89 @@
                     if (footerTotal && eventos.length > 0) {
                         footerTotal.textContent = `${eventos.length} Atividades Estratégicas Planejadas para 2027`;
                     }
-                    renderCalendar(eventos);
+                    setupFilters(eventos);
                     renderPrintSummary(eventos);
                 } catch (err) {
                     console.error('Erro ao carregar events.json:', err);
                     container.innerHTML = `
                         <div class="error-state">
                             <p style="font-size: 1.1rem; color: #dc2626; font-weight: 600;">⚠️ Erro ao carregar as atividades</p>
-                            <p style="margin-top: 0.5rem; color: #64748b;">${err.message}</p>
+                            <p style="margin-top: 0.5rem; color: #64748b;">Não foi possível ler os dados do calendário. Tente novamente.</p>
                             <button onclick="location.reload()">Tentar Novamente</button>
                         </div>
                     `;
                 }
             }
 
-            function renderCalendar(eventos) {
+            function setupFilters(eventos) {
+                const typeLabels = {
+                    'type-eleicao': 'Reuniões e planejamento',
+                    'type-capacitacao': 'Estudos, capacitações e seminários',
+                    'type-encontro': 'Encontros regionais e temáticos',
+                    'type-confraternizacao': 'Confraternizações',
+                    'type-cce': 'CCE',
+                    'type-cap': 'CAP'
+                };
+                const normalize = value => String(value ?? '').normalize('NFD')
+                    .replace(/\p{M}/gu, '').toLocaleLowerCase('pt-BR').trim();
+                const entries = eventos.map(event => ({
+                    event,
+                    area: (event.competencia || '').trim(),
+                    text: normalize([
+                        event.titulo, event.descricao, event.data, event.tipoLabel,
+                        typeLabels[event.tipo], event.competencia
+                    ].join(' '))
+                }));
+                for (const [month, label] of Object.entries(MONTH_NAMES)) {
+                    monthFilter.add(new Option(label, month));
+                }
+                const types = [...new Set(eventos.map(event => event.tipo).filter(Boolean))];
+                for (const type of types) {
+                    typeFilter.add(new Option(typeLabels[type] || type, type));
+                }
+                const areas = [...new Set(entries.map(entry => entry.area).filter(Boolean))];
+                areas.sort((a, b) => a.localeCompare(b, 'pt-BR'));
+                for (const area of areas) {
+                    areaFilter.add(new Option(area, area));
+                }
+
+                function applyFilters() {
+                    const query = normalize(search.value);
+                    const terms = query ? query.split(/\s+/) : [];
+                    const filtering = Boolean(query || monthFilter.value || typeFilter.value || areaFilter.value);
+                    const matching = entries.filter(({ event, area, text }) =>
+                        (!monthFilter.value || Number(event.mes) === Number(monthFilter.value)) &&
+                        (!typeFilter.value || event.tipo === typeFilter.value) &&
+                        (!areaFilter.value || area === areaFilter.value) &&
+                        terms.every(term => text.includes(term))
+                    );
+                    filterCount.textContent = matching.length === 1
+                        ? '1 atividade encontrada'
+                        : `${matching.length} atividades encontradas`;
+                    clearFilters.disabled = !filtering && !search.value;
+                    renderCalendar(matching.map(entry => entry.event), filtering);
+                }
+
+                filters.addEventListener('submit', event => event.preventDefault());
+                search.addEventListener('input', applyFilters);
+                filters.addEventListener('change', event => {
+                    if (event.target !== search) applyFilters();
+                });
+                filters.addEventListener('reset', event => {
+                    event.preventDefault();
+                    search.value = monthFilter.value = typeFilter.value = areaFilter.value = '';
+                    applyFilters();
+                    search.focus();
+                });
+                filterFields.disabled = false;
+                applyFilters();
+            }
+
+            function renderCalendar(eventos, filtering) {
                 if (!eventos || eventos.length === 0) {
                     container.innerHTML = `
                         <div class="loading-state">
-                            <p>Nenhuma atividade cadastrada no momento.</p>
+                            <p>${filtering ? 'Nenhuma atividade corresponde à busca. Ajuste ou limpe os filtros.' : 'Nenhuma atividade cadastrada no momento.'}</p>
                         </div>
                     `;
                     return;
@@ -1374,6 +1554,10 @@
                     monthEvents.forEach(ev => {
                         const card = document.createElement('div');
                         card.className = 'month-card';
+                        card.tabIndex = 0;
+                        card.setAttribute('role', 'button');
+                        card.setAttribute('aria-label', `${ev.data} — ${ev.titulo}`);
+                        card.setAttribute('aria-haspopup', 'dialog');
 
                         const tipoLabel = ev.tipoLabel || TIPO_LABELS[ev.tipo] || 'Atividade';
                         const imgHtml = ev.imagem ? `
@@ -1390,12 +1574,14 @@
                             <div class="month-card-body">
                                 <span class="activity-type ${escapeHtml(ev.tipo)}">${escapeHtml(tipoLabel)}</span>
                                 <div class="activity-title">${escapeHtml(ev.titulo)}</div>
+                                ${ev.competencia ? `<p class="card-competence">${escapeHtml(ev.competencia)}</p>` : ''}
                                 <div class="activity-description">${escapeHtml(ev.descricao)}</div>
                             </div>
                         `;
 
                         // Ao clicar no card, abre o modal expandido
                         card.addEventListener('click', () => {
+                            activeCard = card;
                             const cardHeader = card.querySelector('.month-card-header');
                             const headerStyle = window.getComputedStyle(cardHeader);
                             const cardStyle = window.getComputedStyle(card);
@@ -1425,6 +1611,13 @@
                             modal.classList.add('active');
                             modal.setAttribute('aria-hidden', 'false');
                             document.body.style.overflow = 'hidden';
+                            modalCloseBtn.focus();
+                        });
+                        card.addEventListener('keydown', event => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                                event.preventDefault();
+                                card.click();
+                            }
                         });
 
                         gridEl.appendChild(card);
