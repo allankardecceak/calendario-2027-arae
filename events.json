@@ -3,7 +3,7 @@
     "titulo": "Calendário de Atividades 2027",
     "subtitulo": "7º Conselho Espírita de Unificação — Duque de Caxias",
     "area": "Área de Ações Estratégicas (ARAE)",
-    "totalAtividades": 35,
+    "totalAtividades": 36,
     "ultimaAtualizacao": "2026-11-09"
   },
   "eventos": [
@@ -11,7 +11,7 @@
       "id": "ev-1793506610621",
       "mes": 1,
       "nomeMes": "Janeiro",
-      "data": "10 de Janeiro - Parte I",
+      "data": "10 a 10 de Janeiro — Parte I",
       "tipo": "type-eleicao",
       "tipoLabel": "Reunião do Conselho",
       "titulo": "UNIFICAÇÃO - Reunião do Conselho",
@@ -20,13 +20,14 @@
       "diretrizes": "1 (Difusão) e 2 (Universalidade)",
       "imagem": "",
       "dataInicio": "2027-01-10",
-      "observacaoData": "Parte I"
+      "observacaoData": "Parte I",
+      "dataFim": "2027-01-10"
     },
     {
       "id": "ev-1793506715579",
       "mes": 1,
       "nomeMes": "Janeiro",
-      "data": "10 de Janeiro - Parte II",
+      "data": "10 a 10 de Janeiro — Parte II",
       "tipo": "type-eleicao",
       "tipoLabel": "Planejamento & Adequação",
       "titulo": "UNIFICAÇÃO — Planejamento e Adequação",
@@ -35,7 +36,8 @@
       "diretrizes": "1 (Difusão) e 2 (Universalidade)",
       "imagem": "",
       "dataInicio": "2027-01-10",
-      "observacaoData": "Parte II"
+      "observacaoData": "Parte II",
+      "dataFim": "2027-01-10"
     },
     {
       "id": "fev-01",
@@ -363,20 +365,6 @@
       "observacaoData": "Parte II"
     },
     {
-      "id": "set-04",
-      "mes": 9,
-      "nomeMes": "Setembro",
-      "data": "26 de Setembro",
-      "tipo": "type-encontro",
-      "tipoLabel": "Encontro Regional",
-      "titulo": "RECOME — Reunião de Confraternização de Mediunidades Espíritas",
-      "descricao": "Reunião dos participantes de mocidades das instituições espíritas.",
-      "competencia": "Infância, Juventude e Família",
-      "diretrizes": "1 (Difusão) e Juventude",
-      "imagem": "",
-      "dataInicio": "2027-09-26"
-    },
-    {
       "id": "ev-1794191306498",
       "mes": 9,
       "nomeMes": "Setembro",
@@ -389,6 +377,20 @@
       "diretrizes": "1 (Difusão) e 7 (Formação Continuada)",
       "imagem": "",
       "dataInicio": "2027-09-19"
+    },
+    {
+      "id": "set-04",
+      "mes": 9,
+      "nomeMes": "Setembro",
+      "data": "26 de Setembro",
+      "tipo": "type-encontro",
+      "tipoLabel": "Encontro Regional",
+      "titulo": "RECOME — Reunião de Confraternização de Mediunidades Espíritas",
+      "descricao": "Reunião dos participantes de mocidades das instituições espíritas.",
+      "competencia": "Infância, Juventude e Família",
+      "diretrizes": "1 (Difusão) e Juventude",
+      "imagem": "",
+      "dataInicio": "2027-09-26"
     },
     {
       "id": "out-01",
@@ -433,6 +435,21 @@
       "diretrizes": "1 (Difusão) e 3 (Integração)",
       "imagem": "",
       "dataInicio": "2027-10-17"
+    },
+    {
+      "id": "ev-1793719899972",
+      "mes": 11,
+      "nomeMes": "Novembro",
+      "data": "01 a 30 de Novembro",
+      "tipo": "type-capacitacao",
+      "tipoLabel": "Palestras",
+      "titulo": "Mês da Mulher Espírita",
+      "descricao": "Palestras realizadas em instituições espíritas em homenagem à mulher espírita.",
+      "competencia": "Estudos Espíritas",
+      "diretrizes": "1 (Difusão) e 3 (Integração)",
+      "imagem": "",
+      "dataInicio": "2027-11-01",
+      "dataFim": "2027-11-30"
     },
     {
       "id": "nov-01",
@@ -491,21 +508,6 @@
       "diretrizes": "3 (Integração), 6 (Unificação) e 10 (Família)",
       "imagem": "",
       "dataInicio": "2027-11-28"
-    },
-    {
-      "id": "ev-1793719899972",
-      "mes": 11,
-      "nomeMes": "Novembro",
-      "data": "01 a 30 de Novembro",
-      "tipo": "type-capacitacao",
-      "tipoLabel": "Palestras",
-      "titulo": "Mês da Mulher Espírita",
-      "descricao": "Palestras realizadas em instituições espíritas em homenagem à mulher espírita.",
-      "competencia": "Estudos Espíritas",
-      "diretrizes": "1 (Difusão) e 3 (Integração)",
-      "imagem": "",
-      "dataInicio": "2027-11-01",
-      "dataFim": "2027-11-30"
     },
     {
       "id": "dez-01",
